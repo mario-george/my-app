@@ -11,5 +11,16 @@ import {
 } from "./material-tailwind";
 
 export default function Navbar() {
- return <></>
+  const [openNav, setOpenNav] = React.useState(false);
+
+  React.useEffect(() => {
+    window.addEventListener(
+      "resize",
+      () => window.innerWidth >= 960 && setOpenNav(false)
+    );
+  }, []);
+
+  
+
+  return <></>
 }

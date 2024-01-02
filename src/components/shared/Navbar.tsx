@@ -36,7 +36,7 @@ export default function Navbar() {
     </ul>
   );
 
-  return <(
+  return (
     <div className="max-h-[768px]  ">
       <NavbarEl
         placeholder=""
@@ -136,5 +136,5 @@ export default function Navbar() {
         </MobileNav>
       </NavbarEl>
     </div>
-  );>
+  );
 }

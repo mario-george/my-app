@@ -111,7 +111,29 @@ export default function Navbar() {
             </IconButton>
           </div>
         </div>
-
+        <MobileNav open={openNav}>
+          {navList}
+          <div className="flex items-center gap-x-1">
+            <Button
+              placeholder=""
+              fullWidth
+              variant="text"
+              size="sm"
+              className="!capitalize"
+            >
+              <span>Log In</span>
+            </Button>
+            <Button
+              placeholder=""
+              fullWidth
+              variant="gradient"
+              size="sm"
+              className=""
+            >
+              <span>Sign in</span>
+            </Button>
+          </div>
+        </MobileNav>
       </NavbarEl>
     </div>
   );>

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import {
   Card,
   Input,
@@ -6,9 +8,9 @@ import {
   Typography,
 } from "@/components/shared/material-tailwind";
 
-export default function HomePage() {
+export default function SignUpPage() {
   return (
-    <div className="w-full mx-auto">
+    <div className="w-full mx-auto flex justify-center my-[1.5rem]">
       <Card placeholder="" color="transparent" shadow={false}>
         <Typography placeholder="" variant="h4" color="blue-gray">
           Sign Up
@@ -81,12 +83,9 @@ export default function HomePage() {
                 className="flex items-center font-normal"
               >
                 I agree the
-                <a
-                  href="#"
-                  className="font-medium transition-colors hover:text-gray-900"
-                >
+                <span className="font-medium transition-colors hover:text-gray-900">
                   &nbsp;Terms and Conditions
-                </a>
+                </span>
               </Typography>
             }
             containerProps={{ className: "-ml-2.5" }}
@@ -104,9 +103,9 @@ export default function HomePage() {
             className="mt-4 text-center font-normal"
           >
             Already have an account?{" "}
-            <a href="#" className="font-medium text-gray-900">
-              Sign In
-            </a>
+          <Link href="/login" className="font-medium text-gray-900">
+            Login
+          </Link>
           </Typography>
         </form>
       </Card>

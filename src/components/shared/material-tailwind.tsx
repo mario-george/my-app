@@ -7,8 +7,8 @@ import {
   Input,
   Checkbox,
   Typography, Navbar,
-  MobileNav,IconButton
+  MobileNav,IconButton,Collapse
 } from "@material-tailwind/react";
 
 export { ThemeProvider, Card, Input, Checkbox, Button, Typography, Navbar,
-  MobileNav, IconButton};
+  MobileNav, IconButton,Collapse};

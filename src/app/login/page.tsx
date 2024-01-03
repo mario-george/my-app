@@ -5,6 +5,7 @@ import {
     Button,
     Typography,
   } from "@/components/shared/material-tailwind";
+import Link from "next/link";
   
   export default function LoginPage() {
     return (
@@ -56,7 +57,23 @@ import {
               />
             </div>
            
-          
+            <Button
+              placeholder={``}
+              className="mt-6 !capitalize !bg-blue-200"
+              fullWidth
+            >
+              Login
+            </Button>
+            <Typography
+              placeholder=""
+              color="gray"
+              className="mt-4 text-center font-normal"
+            >
+              Don't have have an account?{" "}
+              <Link href="/signup" className="font-medium text-gray-900">
+                Sign Up
+              </Link>
+            </Typography>
           </form>
         </Card>
       </div>

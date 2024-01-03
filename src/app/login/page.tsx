@@ -36,7 +36,24 @@ import {
                   className: "before:content-none after:content-none",
                 }}
               />
-
+              <Typography
+                placeholder="password"
+                variant="h6"
+                color="blue-gray"
+                className="-mb-3"
+              >
+                Password
+              </Typography>
+              <Input
+                crossOrigin=""
+                type="password"
+                size="lg"
+                placeholder="********"
+                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                labelProps={{
+                  className: "before:content-none after:content-none",
+                }}
+              />
             </div>
            
           

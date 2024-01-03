@@ -59,7 +59,6 @@ export default function Navbar() {
             <div className="flex items-center gap-x-2">
             <Link href="login">
 
-            </Link>
               <Button
                 placeholder=""
                 variant="text"
@@ -68,6 +67,9 @@ export default function Navbar() {
               >
                 <span>Log In</span>
               </Button>
+            </Link>
+
+
 
               <Link href="/signup">
 

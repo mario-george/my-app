@@ -1,9 +1,11 @@
 "use client"
 
+import Link from 'next/link'
 import React from "react";
+
 import {
   Navbar as NavbarEl,
-  MobileNav,
+  Collapse,
   Typography,
   Button,
   IconButton,
@@ -22,20 +24,21 @@ export default function Navbar() {
 
   const navList = (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+
+      <Link href="/">
+
+
       <Typography
         placeholder={``}
-        as="li"
         variant="small"
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center text-lg">
           Users
-        </a>
       </Typography>
+      </Link>
     </ul>
   );
-
   return (
     <div className="max-h-[768px]  ">
       <NavbarEl
@@ -45,8 +48,8 @@ export default function Navbar() {
         <div className="flex items-center justify-between text-blue-gray-900">
           <Typography
             placeholder=""
-            as="a"
-            href="#"
+            as="div"
+
             className="mr-4 cursor-pointer py-1.5 font-medium text-2xl"
           >
             Places
@@ -54,6 +57,9 @@ export default function Navbar() {
           <div className="flex items-center gap-4">
             <div className="mr-4 hidden lg:block">{navList}</div>
             <div className="flex items-center gap-x-2">
+            <Link href="login">
+
+            </Link>
               <Button
                 placeholder=""
                 variant="text"
@@ -62,6 +68,10 @@ export default function Navbar() {
               >
                 <span>Log In</span>
               </Button>
+
+              <Link href="/signup">
+
+
               <Button
                 placeholder=""
                 variant="gradient"
@@ -70,6 +80,7 @@ export default function Navbar() {
               >
                 <span>Sign Up</span>
               </Button>
+              </Link>
             </div>
             <IconButton
               placeholder=""
@@ -111,9 +122,11 @@ export default function Navbar() {
             </IconButton>
           </div>
         </div>
-        <MobileNav open={openNav}>
+        <Collapse open={openNav}>
           {navList}
-          <div className="flex items-center gap-x-1">
+          <div className="flex items-center gap-x-1 w-full">
+            <Link href="/login" className="w-full">
+
             <Button
               placeholder=""
               fullWidth
@@ -123,17 +136,20 @@ export default function Navbar() {
             >
               <span>Log In</span>
             </Button>
+            </Link>
+
+            <Link href="/signup" className="w-full">
             <Button
               placeholder=""
               fullWidth
               variant="gradient"
               size="sm"
-              className=""
+              className="!capitalize"
             >
-              <span>Sign in</span>
-            </Button>
+              <span>Sign Up</span>
+            </Button></Link>
           </div>
-        </MobileNav>
+        </Collapse>
       </NavbarEl>
     </div>
   );

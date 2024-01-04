@@ -12,7 +12,18 @@ export default function useSignInForm() {
     const [errors, setErrors] = useState<Errors>({});
 
     const validateForm = () => {
-
+        let errors: Errors = {};
+        if (!formState.email) {
+            errors.email = "Email is required.";
+        } else if (!/\S+@\S+\.\S+/.test(formState.email)) {
+            errors.email = "Email is invalid.";
+        }
+        if (!formState.password) {
+            errors.password = "Password is required.";
+        } else if (formState.password.length < 6) {
+            errors.password = "Password must be at least 6 characters.";
+        }
+        setErrors(errors);
     };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

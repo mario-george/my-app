@@ -59,7 +59,7 @@ import Link from "next/link";
            
             <Button
               placeholder={``}
-              className="mt-6 !capitalize !bg-blue-200"
+              className="mt-6 !capitalize !bg-blue-500"
               fullWidth
             >
               Login

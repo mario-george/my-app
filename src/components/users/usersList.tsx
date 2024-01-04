@@ -2,7 +2,13 @@ import { Avatar, Box, Card, Flex,Text } from "@radix-ui/themes";
 
 
 export default function Users() {
-
+  async function getUsers() {
+    const res = await fetch(`${process.env.API_URL}users/signup`);
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    return res.json();
+  }
 
 interface user{
     name:string,

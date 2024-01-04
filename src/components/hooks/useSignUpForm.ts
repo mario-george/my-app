@@ -38,7 +38,10 @@ export default function useSignUpForm() {
   // The square brackets [event.target.name] tell JavaScript to interpret the expression inside as a variable, allowing you to use dynamic keys in your object.
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  
+    setFormState({
+      ...formState,
+      [event.target.name]: event.target.value,
+    });
   };
 
   const handleSubmit = (event: FormEvent) => {

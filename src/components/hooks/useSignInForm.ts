@@ -16,7 +16,10 @@ export default function useSignInForm() {
     };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-
+        setFormState({
+            ...formState,
+            [event.target.name]: event.target.value,
+        });
     };
 
     const handleSubmit = (event: FormEvent) => {

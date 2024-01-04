@@ -23,7 +23,15 @@ export default function useSignInForm() {
     };
 
     const handleSubmit = (event: FormEvent) => {
- 
+        event.preventDefault();
+        console.log(errors);
+        console.log(formState);
+        validateForm();
+        if (Object.keys(errors).length === 0) {
+            console.log("Form submitted successfully!");
+        } else {
+            console.log("Form has errors. Please correct them.");
+        }
     };
 
     return { formState, errors, handleChange, handleSubmit };

@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 
-
 import useSignUpForm from "@/components/hooks/useSignUpForm";
 
 import {
@@ -29,9 +28,14 @@ export default function SignUpPage() {
           onSubmit={handleSubmit}
         >
           <div className="mb-1 flex flex-col gap-6">
-            <div color="blue-gray" className="-mb-3">
+            <Typography
+              placeholder="name"
+              color="blue-gray"
+              className="-mb-3"
+              variant="h6"
+            >
               Name
-            </div>
+            </Typography>
             <Input
               crossOrigin=""
               name="name"
@@ -128,7 +132,7 @@ export default function SignUpPage() {
           />
           <Button
             placeholder={``}
-            className="mt-6 !capitalize !bg-blue-200"
+            className="mt-6 !capitalize !bg-blue-500 "
             fullWidth
             type="submit"
           >

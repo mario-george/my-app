@@ -1,6 +1,7 @@
 "use client";
-
+import Cookies from "js-cookie";
 import { FormEvent, useState } from "react";
+import useHttp from "./useHttp";
 
 interface Errors {
   name?: string;
@@ -9,13 +10,14 @@ interface Errors {
 }
 
 export default function useSignUpForm() {
+  const { isLoading, error, sendRequest } = useHttp();
+
   const [formState, setFormState] = useState({
     name: "",
     email: "",
     password: "",
   });
   const [errors, setErrors] = useState<Errors>({});
-
   const validateForm = () => {
     let errors: Errors = {};
     if (!formState.name) {
@@ -44,13 +46,22 @@ export default function useSignUpForm() {
     });
   };
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    console.log(errors)
-    console.log(formState)
+    console.log(errors);
+    console.log(formState);
     validateForm();
     if (Object.keys(errors).length === 0) {
-      console.log("Form submitted successfully!");
+      console.log("Form validation is successful!");
+      const data = await sendRequest("users/signup", "POST", formState);
+      Cookies.set("token", data.token); // set a cookie instead of using localStorage
+
+      /* 
+      
+      localStorage.setItem("token", data.token);
+      set in localStorage or setting it as a cookie and it will be automatically sent to each HTTP request to the server
+
+       */
     } else {
       console.log("Form has errors. Please correct them.");
     }

@@ -1,7 +1,9 @@
-"use client"
+"use client";
 
-import Link from 'next/link'
+import Link from "next/link";
 import React from "react";
+
+import { useSelector } from "react-redux";
 
 import {
   Navbar as NavbarEl,
@@ -15,6 +17,8 @@ import {
 export default function Navbar() {
   const [openNav, setOpenNav] = React.useState(false);
 
+  const user = useSelector((state) => state.user.user);
+
   React.useEffect(() => {
     window.addEventListener(
       "resize",
@@ -24,19 +28,18 @@ export default function Navbar() {
 
   const navList = (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-
       <Link href="/">
-
-
-      <Typography
-        placeholder={``}
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
+        <Typography
+          placeholder={``}
+          variant="small"
+          color="blue-gray"
+          className="p-1 font-normal"
+        >
           Users
-      </Typography>
+        </Typography>
       </Link>
+      {user && <Link href="/add-place">Add Place</Link>}
+      {user && <Link href="/places">My Places</Link>}
     </ul>
   );
   return (
@@ -49,7 +52,6 @@ export default function Navbar() {
           <Typography
             placeholder=""
             as="div"
-
             className="mr-4 cursor-pointer py-1.5 font-medium text-2xl"
           >
             Places
@@ -57,31 +59,26 @@ export default function Navbar() {
           <div className="flex items-center gap-4">
             <div className="mr-4 hidden lg:block">{navList}</div>
             <div className="flex items-center gap-x-2">
-            <Link href="login">
-
-              <Button
-                placeholder=""
-                variant="text"
-                size="sm"
-                className="hidden lg:inline-block !capitalize text-lg"
-              >
-                <span>Log In</span>
-              </Button>
-            </Link>
-
-
+              <Link href="login">
+                <Button
+                  placeholder=""
+                  variant="text"
+                  size="sm"
+                  className="hidden lg:inline-block !capitalize text-lg"
+                >
+                  <span>Log In</span>
+                </Button>
+              </Link>
 
               <Link href="/signup">
-
-
-              <Button
-                placeholder=""
-                variant="gradient"
-                size="sm"
-                className="hidden lg:inline-block !capitalize text-lg"
-              >
-                <span>Sign Up</span>
-              </Button>
+                <Button
+                  placeholder=""
+                  variant="gradient"
+                  size="sm"
+                  className="hidden lg:inline-block !capitalize text-lg"
+                >
+                  <span>Sign Up</span>
+                </Button>
               </Link>
             </div>
             <IconButton
@@ -128,28 +125,28 @@ export default function Navbar() {
           {navList}
           <div className="flex items-center gap-x-1 w-full">
             <Link href="/login" className="w-full">
-
-            <Button
-              placeholder=""
-              fullWidth
-              variant="text"
-              size="sm"
-              className="!capitalize"
-            >
-              <span>Log In</span>
-            </Button>
+              <Button
+                placeholder=""
+                fullWidth
+                variant="text"
+                size="sm"
+                className="!capitalize"
+              >
+                <span>Log In</span>
+              </Button>
             </Link>
 
             <Link href="/signup" className="w-full">
-            <Button
-              placeholder=""
-              fullWidth
-              variant="gradient"
-              size="sm"
-              className="!capitalize"
-            >
-              <span>Sign Up</span>
-            </Button></Link>
+              <Button
+                placeholder=""
+                fullWidth
+                variant="gradient"
+                size="sm"
+                className="!capitalize"
+              >
+                <span>Sign Up</span>
+              </Button>
+            </Link>
           </div>
         </Collapse>
       </NavbarEl>

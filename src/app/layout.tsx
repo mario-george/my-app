@@ -6,7 +6,7 @@ import "@radix-ui/themes/styles.css";
 
 import Layout from "@/components/shared/Layout";
 
-// store
+import { NextUIProvider } from "@nextui-org/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en" className=" ">
       <body className={inter.className}>
-        <Layout>{children}</Layout>
+        <NextUIProvider>
+          <Layout>{children}</Layout>
+        </NextUIProvider>
       </body>
     </html>
   );

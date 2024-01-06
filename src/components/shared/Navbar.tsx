@@ -38,8 +38,8 @@ export default function Navbar() {
           Users
         </Typography>
       </Link>
-      {user && <Link href="/add-place">Add Place</Link>}
-      {user && <Link href="/places">My Places</Link>}
+      {true && <Link href="/addPlace">Add Place</Link>}
+      {true && <Link href="/places">My Places</Link>}
     </ul>
   );
   return (

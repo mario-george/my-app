@@ -6,8 +6,6 @@ import "@radix-ui/themes/styles.css";
 
 import Layout from "@/components/shared/Layout";
 
-import { NextUIProvider } from "@nextui-org/react";
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -23,9 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" className=" ">
       <body className={inter.className}>
-        <NextUIProvider>
-          <Layout>{children}</Layout>
-        </NextUIProvider>
+        <Layout>{children}</Layout>
       </body>
     </html>
   );

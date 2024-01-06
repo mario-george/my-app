@@ -44,10 +44,47 @@ const useHttp = () => {
     }
   };
 
+  const sendRequestFormData = async (
+    url: string,
+    method: string = "POST",
+    body: FormData
+  ) => {
+    setIsLoading(true);
+    setError(null);
+
+    url = process.env.NEXT_PUBLIC_API_URL + url;
+
+  
+    try {
+      const response = await fetch(url, {
+        method,
+        body: body,
+
+
+      });
+
+      const data = await response.json();
+      console.log(data);
+      if (!response.ok) {
+        console.log(data);
+        throw new Error(data.message || "Something went wrong!");
+      }
+
+      console.log(data);
+
+      setIsLoading(false);
+      return data;
+    } catch (err: any) {
+      setIsLoading(false);
+      setError(err.message || "Something went wrong!");
+      throw err;
+    }
+  };
   return {
     isLoading,
     error,
     sendRequest,
+    sendRequestFormData,
   };
 };
 

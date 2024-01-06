@@ -2,17 +2,39 @@
 import Link from "next/link";
 
 import useSignUpForm from "@/components/hooks/useSignUpForm";
+import { Button } from "@nextui-org/react";
 
 import {
   Card,
   Input,
   Checkbox,
-  Button,
   Typography,
 } from "@/components/shared/material-tailwind";
+import { useState } from "react";
 
 export default function SignUpPage() {
-  const { formState, errors, handleChange, handleSubmit } = useSignUpForm();
+  const [image, setImage] = useState('/images/noImage.jpg'); // Set the initial image to the default image
+
+  const { formState, errors, handleChange, handleSubmit, isLoading } =
+    useSignUpForm();
+  const handleImageUpload = (event:React.ChangeEvent<HTMLInputElement>) => {
+    // Handle the image file upload
+    let file
+    if (event.target.files && event.target.files.length===1 ){
+
+      file = event.target.files[0];
+      readImage(file)
+    }
+  };const readImage = (file) => {
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setImage(reader.result);
+    };
+
+    reader.readAsDataURL(file);
+  };
+
 
   return (
     <div className="w-full mx-auto flex justify-center my-[1.5rem]">
@@ -55,7 +77,6 @@ export default function SignUpPage() {
                 {errors.name}
               </Typography>
             )}
-
             <Typography
               placeholder="email"
               variant="h6"
@@ -83,7 +104,6 @@ export default function SignUpPage() {
                 {errors.email}
               </Typography>
             )}
-
             <Typography
               placeholder="password"
               variant="h6"
@@ -111,7 +131,26 @@ export default function SignUpPage() {
               <Typography className="text-red-500" placeholder="">
                 {errors.password}
               </Typography>
-            )}
+            )}{" "}
+            <input
+              type="file"
+              accept=".jpg,.png,.jpeg"
+              onChange={handleImageUpload}
+              style={{ display: "none" }}
+              id="image-upload"
+            /><img src={image} alt="Uploaded" />
+            <Button
+              color="success"
+              type="button"
+              onClick={() => {
+                const uploadButton = document.getElementById("image-upload");
+                if (uploadButton) {
+                  uploadButton.click();
+                }
+              }}
+            >
+              Upload Image
+            </Button>
           </div>
           <Checkbox
             crossOrigin=""
@@ -131,10 +170,10 @@ export default function SignUpPage() {
             containerProps={{ className: "-ml-2.5" }}
           />
           <Button
-            placeholder={``}
             className="mt-6 !capitalize !bg-blue-500 "
-            fullWidth
             type="submit"
+            isLoading={isLoading}
+            fullWidth
           >
             sign up
           </Button>

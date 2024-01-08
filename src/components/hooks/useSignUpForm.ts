@@ -2,7 +2,9 @@
 import Cookies from "js-cookie";
 import { FormEvent, useState } from "react";
 import useHttp from "./useHttp";
+import { useDispatch } from "react-redux";
 
+import { login } from "@/components/GlobalRedux/userSlice";
 interface Errors {
   name?: string;
   email?: string;
@@ -11,6 +13,7 @@ interface Errors {
 
 export default function useSignUpForm() {
   const { isLoading, error, sendRequestFormData } = useHttp();
+  const dispatch = useDispatch();
 
   const [formState, setFormState] = useState({
     name: "",
@@ -72,12 +75,16 @@ export default function useSignUpForm() {
 
       for (let [key, value] of formData?.entries()) {
         console.log(key, value);
-      } 
+      }
 
       // Send the FormData object in the body of the signup request
       const data = await sendRequestFormData("users/signup", "POST", formData);
-
-      Cookies.set("token", data.token); // set a cookie instead of using localStorage
+      const { token, userId } = data;
+      console.log(data);
+      console.log(data);
+      console.log(data);
+      console.log(data);
+      dispatch(login({ token, userID: userId }));
 
       /* 
       

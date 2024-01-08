@@ -20,12 +20,29 @@ interface Props {
 const AddPlacePage = (props: Props) => {
   const [image, setImage] = useState("/images/noImage.jpg"); // Set the initial image to the default image of the place
   const { userID } = props.params;
-  console.log(userID);
-  console.log(props);
+
   const { formState, errors, handleChange, handleSubmit, isLoading } =
-    useAddPlaceHook();
+    useAddPlaceHook({userID});
 
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // Handle the image file upload
+    let file;
+    if (event.target.files && event.target.files.length === 1) {
+      file = event.target.files[0];
+      readImage(file);
+    }
+  };
+  const readImage = (file: File) => {
+    const reader = new FileReader();
 
+    reader.onloadend = () => {
+      if (typeof reader.result === "string") {
+        setImage(reader.result);
+      }
+    };
+
+    reader.readAsDataURL(file);
+  };
   return (
     <Card className="mx-[4rem] my-[1rem]">
       <CardHeader className="px-4 pt-12 pb-6 flex-col items-start">
@@ -71,7 +88,7 @@ const AddPlacePage = (props: Props) => {
             required
           />
           <Spacer y={1} />
-
+         
         </form>
       </CardBody>
     </Card>

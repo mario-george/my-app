@@ -3,7 +3,7 @@
 import Link from "next/link";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { autoLogin ,logout} from "@/components/GlobalRedux/userSlice";
+import { autoLogin, logout } from "@/components/GlobalRedux/userSlice";
 import { useSelector } from "react-redux";
 
 import {
@@ -27,9 +27,9 @@ interface RootState {
 export default function Navbar() {
   const [openNav, setOpenNav] = React.useState(false);
   const dispatch = useDispatch();
-let logoutHandler = ()=>{
-  dispatch(logout())
-}
+  let logoutHandler = () => {
+    dispatch(logout());
+  };
   const user = useSelector((state: RootState) => state.user.user);
 
   console.log(user);
@@ -58,8 +58,8 @@ let logoutHandler = ()=>{
           Users
         </Typography>
       </Link>
-      {user.userID && user.token && <Link href="/addPlace">Add Place</Link>}
-      {user.userID && user.token && <Link href="/places">My Places</Link>}
+      {user.userID && user.token && <Link href="/addPlace" className="!text-black p-1">Add Place</Link>}
+      {user.userID && user.token && <Link href="/places" className="!text-black p-1">My Places</Link>}
     </ul>
   );
   return (
@@ -105,9 +105,8 @@ let logoutHandler = ()=>{
             )}
             {user.userID && user.token && (
               <Button
-              type="button"
-              onClick={logoutHandler}
-
+                type="button"
+                onClick={logoutHandler}
                 placeholder=""
                 variant="gradient"
                 size="sm"
@@ -158,31 +157,50 @@ let logoutHandler = ()=>{
         </div>
         <Collapse open={openNav}>
           {navList}
-          <div className="flex items-center gap-x-1 w-full">
-            <Link href="/login" className="w-full">
-              <Button
-                placeholder=""
-                fullWidth
-                variant="text"
-                size="sm"
-                className="!capitalize"
-              >
-                <span>Log In</span>
-              </Button>
-            </Link>
+          {!user.userID && !user.token && (
+            <div className="flex items-center gap-x-1 w-full">
+              <Link href="/login" className="w-full">
+                <Button
+                  placeholder=""
+                  fullWidth
+                  variant="text"
+                  size="sm"
+                  className="!capitalize"
+                >
+                  <span>Log In</span>
+                </Button>
+              </Link>
 
-            <Link href="/signup" className="w-full">
-              <Button
-                placeholder=""
-                fullWidth
-                variant="gradient"
-                size="sm"
-                className="!capitalize"
-              >
-                <span>Sign Up</span>
-              </Button>
-            </Link>
-          </div>
+              <Link href="/signup" className="w-full">
+                <Button
+                  placeholder=""
+                  fullWidth
+                  variant="gradient"
+                  size="sm"
+                  className="!capitalize"
+                >
+                  <span>Sign Up</span>
+                </Button>
+              </Link>
+            </div>
+          )}
+
+{user.userID && user.token && (
+            <div className="flex items-center gap-x-1 w-full">
+                <Button
+                  placeholder=""
+                  onClick={logoutHandler}
+                  fullWidth
+                  variant="text"
+                  size="sm"
+                  className="!capitalize"
+                >
+                  <span>Log out</span>
+                </Button>
+
+             
+            </div>
+          )}
         </Collapse>
       </NavbarEl>
     </div>

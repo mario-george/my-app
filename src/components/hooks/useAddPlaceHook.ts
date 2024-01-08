@@ -63,7 +63,14 @@ export default function useAddPlaceHook({ userID }:{userID:string}) {
       }
 
       // Append the form state to the FormData object
+      formData.append("title", formState.title);
+      formData.append("address", formState.address);
+      formData.append("description", formState.description);
+      formData.append("location", formState.location);
+      formData.append("creator", userID);
 
+      // Send the FormData object in the body of the add place request
+      const data = await sendRequestFormData("places/", "POST", formData);
     } else {
       console.log("Form has errors. Please correct them.");
     }

@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import useHttp from "./useHttp";
-
+import { useDispatch } from "react-redux";
+import { login } from "@/components/GlobalRedux/userSlice";
 interface Errors {
   email?: string;
   password?: string;
@@ -9,6 +10,7 @@ interface Errors {
 
 export default function useSignInForm() {
   const { isLoading, error, sendRequest } = useHttp();
+  const dispatch = useDispatch();
 
   const [formState, setFormState] = useState({
     email: "",
@@ -54,7 +56,6 @@ export default function useSignInForm() {
         console.log(respData);
       } catch (err) {
         console.log(errors);
-
       }
 
       if (error) {
@@ -62,12 +63,20 @@ export default function useSignInForm() {
         errors.back = error;
         setErrors(errors);
       }
+      console.log(respData);
+      console.log(respData);
+      console.log(respData);
       if (respData.token) {
+        const { token, userId } = respData;
+        console.log(respData);
+        console.log(respData);
+        console.log(respData);
+        dispatch(login({ token, userID: userId }));
       }
     } else {
       console.log("Form has errors. Please correct them.");
     }
   };
 
-  return { formState, errors, handleChange, handleSubmit };
+  return { formState, errors, handleChange, handleSubmit, isLoading };
 }

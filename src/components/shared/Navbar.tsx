@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import React from "react";
-
+import { useDispatch } from "react-redux";
+import { autoLogin } from "@/components/GlobalRedux/userSlice";
 import { useSelector } from "react-redux";
 
 import {
@@ -13,11 +14,28 @@ import {
   IconButton,
   Card,
 } from "./material-tailwind";
-
+interface RootState {
+  user: {
+    user: {
+      token?: string | null;
+      userID?: string | null;
+      expirationDate?: Date | null;
+    };
+    loggedIn?: boolean | null;
+  };
+}
 export default function Navbar() {
   const [openNav, setOpenNav] = React.useState(false);
+  const dispatch = useDispatch();
 
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state: RootState) => state.user.user);
+
+  console.log(user);
+
+  React.useEffect(() => {
+    // dispatch the action to check user in localStorage and if the token is not expired and save to the global user state when the component mounts
+    dispatch(autoLogin());
+  }, [dispatch]);
 
   React.useEffect(() => {
     window.addEventListener(
@@ -38,8 +56,8 @@ export default function Navbar() {
           Users
         </Typography>
       </Link>
-      {user && <Link href="/add-place">Add Place</Link>}
-      {user && <Link href="/places">My Places</Link>}
+      {true && <Link href="/addPlace">Add Place</Link>}
+      {true && <Link href="/places">My Places</Link>}
     </ul>
   );
   return (

@@ -1,0 +1,1 @@
+// display list of user places (and allow edit and delete only for the authenticated user or authorized user)

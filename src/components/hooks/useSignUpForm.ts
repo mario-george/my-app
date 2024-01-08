@@ -2,7 +2,9 @@
 import Cookies from "js-cookie";
 import { FormEvent, useState } from "react";
 import useHttp from "./useHttp";
+import { useDispatch } from "react-redux";
 
+import { login } from "@/components/GlobalRedux/userSlice";
 interface Errors {
   name?: string;
   email?: string;
@@ -10,7 +12,8 @@ interface Errors {
 }
 
 export default function useSignUpForm() {
-  const { isLoading, error, sendRequest } = useHttp();
+  const { isLoading, error, sendRequestFormData } = useHttp();
+  const dispatch = useDispatch();
 
   const [formState, setFormState] = useState({
     name: "",
@@ -53,8 +56,35 @@ export default function useSignUpForm() {
     validateForm();
     if (Object.keys(errors).length === 0) {
       console.log("Form validation is successful!");
-      const data = await sendRequest("users/signup", "POST", formState);
-      Cookies.set("token", data.token); // set a cookie instead of using localStorage
+
+      // Create a new FormData object
+      const formData = new FormData();
+
+      // Append the file to the FormData object
+      const fileInput = document.getElementById(
+        "image-upload"
+      ) as HTMLInputElement;
+      if (fileInput && fileInput.files && fileInput.files.length > 0) {
+        formData.append("image", fileInput.files[0]);
+      }
+
+      // Append the form state to the FormData object
+      formData.append("name", formState.name);
+      formData.append("email", formState.email);
+      formData.append("password", formState.password);
+
+      for (let [key, value] of formData?.entries()) {
+        console.log(key, value);
+      }
+
+      // Send the FormData object in the body of the signup request
+      const data = await sendRequestFormData("users/signup", "POST", formData);
+      const { token, userId } = data;
+      console.log(data);
+      console.log(data);
+      console.log(data);
+      console.log(data);
+      dispatch(login({ token, userID: userId }));
 
       /* 
       
@@ -67,5 +97,5 @@ export default function useSignUpForm() {
     }
   };
 
-  return { formState, errors, handleChange, handleSubmit };
+  return { formState, errors, handleChange, handleSubmit, isLoading };
 }

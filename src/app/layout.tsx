@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import {cookies} from 'next/headers'
 
 import "./globals.css";
 import "@radix-ui/themes/styles.css";
 
-import Layout from "@/components/shared/Layout";
 
-// store
+
+import Layout from "@/components/shared/Layout";
 
 const inter = Inter({ subsets: ["latin"] });
 

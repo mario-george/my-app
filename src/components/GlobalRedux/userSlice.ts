@@ -1,8 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+interface InitialState {
+  user: {
+    token?: string | null;
+    userID?: string | null;
+    expirationDate?: Date | null |string;
+  };
+  loggedIn?: boolean | null;
+}
 
-
-const initialState = {
+const initialState: InitialState = {
   user: {
     token: null,
     userID: null,

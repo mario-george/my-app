@@ -88,7 +88,28 @@ const AddPlacePage = (props: Props) => {
             required
           />
           <Spacer y={1} />
+          <input
+            type="file"
+            accept=".jpg,.png,.jpeg"
+            onChange={handleImageUpload}
+            style={{ display: "none" }}
+            id="place-image"
+          />
+          <div className=" ">
+            <img
+              src={image}
+              className="max-w-[400px] max-h-[400px]"
+              alt="Place Image"
+              onClick={() => {
+                const uploadButton = document.getElementById("place-image");
+                if (uploadButton) {
+                  uploadButton.click();
+                }
+              }}
+            />
          
+          </div>
+     
         </form>
       </CardBody>
     </Card>

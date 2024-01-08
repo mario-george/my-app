@@ -47,7 +47,26 @@ export default function useAddPlaceHook({ userID }:{userID:string}) {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
+    validateForm();
+    if (Object.keys(errors).length === 0) {
+      console.log("Form validation is successful!");
 
+      // Create a new FormData object
+      const formData = new FormData();
+
+      // Append the file to the FormData object
+      const fileInput = document.getElementById(
+        "place-image"
+      ) as HTMLInputElement;
+      if (fileInput && fileInput.files && fileInput.files.length > 0) {
+        formData.append("image", fileInput.files[0]);
+      }
+
+      // Append the form state to the FormData object
+
+    } else {
+      console.log("Form has errors. Please correct them.");
+    }
   };
 
   return { formState, errors, handleChange, handleSubmit, isLoading };

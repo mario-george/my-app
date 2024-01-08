@@ -123,7 +123,10 @@ const AddPlacePage = (props: Props) => {
               <RiImageAddFill className="text-xl" />
             </Button>
           </div>
-         
+          <Spacer y={2} />
+          <Button color="primary" type="submit" isLoading={isLoading} fullWidth>
+            Submit
+          </Button>{" "}
         </form>
       </CardBody>
     </Card>

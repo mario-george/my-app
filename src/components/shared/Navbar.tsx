@@ -26,11 +26,16 @@ interface RootState {
 }
 export default function Navbar() {
   const [openNav, setOpenNav] = React.useState(false);
+  const dispatch = useDispatch();
 
   const user = useSelector((state: RootState) => state.user.user);
 
   console.log(user);
 
+  React.useEffect(() => {
+    // dispatch the action to check user in localStorage and if the token is not expired and save to the global user state when the component mounts
+    dispatch(autoLogin());
+  }, [dispatch]);
 
   React.useEffect(() => {
     window.addEventListener(

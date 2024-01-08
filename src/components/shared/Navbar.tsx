@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import React from "react";
-
+import { useDispatch } from "react-redux";
+import { autoLogin } from "@/components/GlobalRedux/userSlice";
 import { useSelector } from "react-redux";
 
 import {
@@ -13,11 +14,23 @@ import {
   IconButton,
   Card,
 } from "./material-tailwind";
-
+interface RootState {
+  user: {
+    user: {
+      token?: string | null;
+      userID?: string | null;
+      expirationDate?: Date | null;
+    };
+    loggedIn?: boolean | null;
+  };
+}
 export default function Navbar() {
   const [openNav, setOpenNav] = React.useState(false);
 
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state: RootState) => state.user.user);
+
+  console.log(user);
+
 
   React.useEffect(() => {
     window.addEventListener(

@@ -107,9 +107,23 @@ const AddPlacePage = (props: Props) => {
                 }
               }}
             />
-         
+            <Button
+              variant="ghost"
+              color="secondary"
+              type="button"
+              className="my-2 max-w-[400px] mx-auto "
+              onClick={() => {
+                const uploadButton = document.getElementById("place-image");
+                if (uploadButton) {
+                  uploadButton.click();
+                }
+              }}
+            >
+              <span>Upload Image</span>
+              <RiImageAddFill className="text-xl" />
+            </Button>
           </div>
-     
+         
         </form>
       </CardBody>
     </Card>

@@ -37,7 +37,12 @@ const userSlice = createSlice({
       state.loggedIn = true;
     },
     logout: (state) => {
-
+      localStorage.removeItem("user");
+      localStorage.removeItem("loggedIn");
+      state.user.token = null;
+      state.user.expirationDate = null;
+      state.user.userID = null;
+      state.loggedIn = false;
     },
  
   },

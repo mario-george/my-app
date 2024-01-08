@@ -20,7 +20,20 @@ export default function useAddPlaceHook({ userID }:{userID:string}) {
   });
   const [errors, setErrors] = useState<Errors>({});
   const validateForm = () => {
-   
+    let errors: Errors = {};
+    if (!formState.title) {
+      errors.title = "Title is required.";
+    }
+    if (!formState.address) {
+      errors.title = "address is required.";
+    }
+    if (!formState.location) {
+      errors.title = "location is required.";
+    }
+    if (!formState.description) {
+      errors.title = "description is required.";
+    }
+    setErrors(errors);
   };
 
 
@@ -29,7 +42,7 @@ export default function useAddPlaceHook({ userID }:{userID:string}) {
   };
 
   const handleSubmit = async (event: FormEvent) => {
-    
+
   };
 
   return { formState, errors, handleChange, handleSubmit, isLoading };

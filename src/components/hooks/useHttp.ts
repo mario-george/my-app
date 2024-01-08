@@ -54,13 +54,11 @@ const useHttp = () => {
 
     url = process.env.NEXT_PUBLIC_API_URL + url;
 
-  
+    
     try {
       const response = await fetch(url, {
         method,
         body: body,
-
-
       });
 
       const data = await response.json();

@@ -8,6 +8,8 @@ import { NextUIProvider } from "@nextui-org/react";
 import Navbar from "./Navbar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+
+  
   return (
     <>
       <Theme
@@ -15,13 +17,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         grayColor="sand"
         radius="large"
         scaling="95%"
-      >        <NextUIProvider>
-
-        <Provider store={store}>
-          <Navbar />
-          {children}
-        </Provider>        </NextUIProvider>
-
+      >
+        {" "}
+        <NextUIProvider>
+          <Provider store={store}>
+            <Navbar />
+            {children}
+          </Provider>{" "}
+        </NextUIProvider>
       </Theme>
     </>
   );

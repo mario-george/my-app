@@ -38,10 +38,15 @@ export default function useAddPlaceHook({ userID }:{userID:string}) {
 
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-
+    setFormState({
+      ...formState,
+      [event.target.name]: event.target.value,
+    });
   };
 
   const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+
 
   };
 

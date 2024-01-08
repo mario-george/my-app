@@ -22,7 +22,10 @@ const AddPlacePage = (props: Props) => {
   const { userID } = props.params;
   console.log(userID);
   console.log(props);
-  
+  const { formState, errors, handleChange, handleSubmit, isLoading } =
+    useAddPlaceHook();
+
+
   return (
     <Card className="mx-[4rem] my-[1rem]">
       <CardHeader className="px-4 pt-12 pb-6 flex-col items-start">
@@ -34,7 +37,43 @@ const AddPlacePage = (props: Props) => {
         </h1>
       </CardHeader>
 
+      <CardBody>
+        <form onSubmit={handleSubmit}>
+          <Input
+            label="Title"
+            name="title"
+            value={formState.title}
+            onChange={handleChange}
+            required
+          />
+          <Spacer y={1} />
+          <Input
+            label="Address"
+            name="address"
+            value={formState.address}
+            onChange={handleChange}
+            required
+          />
+          <Spacer y={1} />
+          <Input
+            label="Location"
+            name="location"
+            value={formState.location}
+            onChange={handleChange}
+            required
+          />
+          <Spacer y={1} />
+          <Input
+            label="Description"
+            name="description"
+            value={formState.description}
+            onChange={handleChange}
+            required
+          />
+          <Spacer y={1} />
 
+        </form>
+      </CardBody>
     </Card>
   );
 };

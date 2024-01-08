@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 
+
 const initialState = {
   user: {
     token: null,
@@ -44,10 +45,27 @@ const userSlice = createSlice({
       state.user.userID = null;
       state.loggedIn = false;
     },
- 
+    autoLogin: (state) => {
+      let parsedObject = JSON.parse(localStorage.getItem("user") as string);
+
+      let { expirationDate } = state.user;
+      if (
+        parsedObject &&
+        parsedObject.token &&
+        parsedObject.userID &&
+        state.user &&
+        expirationDate &&
+        new Date() < new Date(parsedObject.expirationDate)
+      ) {
+        state.loggedIn = true;
+        state.user.token = parsedObject.token;
+        state.user.userID = parsedObject.userID;
+        state.user.expirationDate = new Date(parsedObject.expirationDate);
+      }
+    },
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, autoLogin } = userSlice.actions;
 
 export default userSlice.reducer;

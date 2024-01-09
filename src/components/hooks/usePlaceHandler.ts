@@ -8,10 +8,19 @@ interface Errors {
   address?: string;
   back?: string;
 }
-
+interface RootState {
+  user: {
+    user: {
+      token?: string | null;
+      userID?: string | null;
+      expirationDate?: Date | null;
+    };
+    loggedIn?: boolean | null;
+  };
+}
 export default function usePlaceHandler(placeID:string) {
   const { isLoading, error, sendRequest } = useHttp();
-  const token = useSelector((state)=>state.user.user.token)
+  const token = useSelector((state:RootState)=>state.user.user.token)
 
   const [formState, setFormState] = useState({
     title: "",

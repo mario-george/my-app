@@ -34,10 +34,14 @@ export default function usePlaceHandler(placeID:string) {
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-
+    setFormState({
+      ...formState,
+      [event.target.name]: event.target.value,
+    });
 
   };
 const handleDeletePlace=()=>{
+    alert('Works')
 }
   const handleUpdate = async (event: FormEvent) => {
     event.preventDefault();

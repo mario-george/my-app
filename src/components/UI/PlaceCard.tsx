@@ -94,7 +94,50 @@ const {formState, errors, handleChange, handleUpdate, isLoading ,handleDeletePla
     </Modal>
   );
   const [editMode, setEditMode] = useState(false);
-
+  let content = isAuthorized ? <></> : <></>;
+  let Buttons = isAuthorized ? (
+    <>
+      {" "}
+      <Button
+        size="lg"
+        className="text-lg"
+        fullWidth
+        color="primary"
+        variant="ghost"
+      >
+        View On Map{" "}
+      </Button>
+      <Button
+        size="lg"
+        className="text-lg"
+        fullWidth
+        color="secondary"
+        variant="ghost"
+      >
+        Edit{" "}
+      </Button>{" "}
+      <Button
+        size="lg"
+        className="text-lg"
+        fullWidth
+        color="danger"
+        variant="ghost"
+        onClick={onOpen}
+      >
+        Delete{" "}
+      </Button>
+    </>
+  ) : (
+    <Button
+      size="lg"
+      className="text-lg"
+      fullWidth
+      color="primary"
+      variant="ghost"
+    >
+      View On Map{" "}
+    </Button>
+  );
   return (
     <>
    

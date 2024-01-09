@@ -12,11 +12,21 @@ interface User{
 export default function Users() {
   const [users, setUsers] = useState([]);
 
-  
+  useEffect(() => {
+    // Fetch data from external API
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}users`)
+      .then((res) => res.json())
+      .then((data) => {
+        setUsers(data.allUsers);
+        console.log(typeof data.allUsers[0]._id);
+        console.log(typeof data.allUsers[0].id);
+      });
+  }, []);
+
   return (
     <>
       {users.length !== 0 ? (
-        users?.map((u) => {
+        users?.map((u:User) => {
           return (
             
             <Card style={{ maxWidth: 240 }} className="my-2">

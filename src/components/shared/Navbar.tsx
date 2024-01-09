@@ -3,7 +3,7 @@
 import Link from "next/link";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { autoLogin } from "@/components/GlobalRedux/userSlice";
+import { autoLogin, logout } from "@/components/GlobalRedux/userSlice";
 import { useSelector } from "react-redux";
 
 import {
@@ -27,7 +27,9 @@ interface RootState {
 export default function Navbar() {
   const [openNav, setOpenNav] = React.useState(false);
   const dispatch = useDispatch();
-
+  let logoutHandler = () => {
+    dispatch(logout());
+  };
   const user = useSelector((state: RootState) => state.user.user);
 
   console.log(user);
@@ -35,7 +37,7 @@ export default function Navbar() {
   React.useEffect(() => {
     // dispatch the action to check user in localStorage and if the token is not expired and save to the global user state when the component mounts
     dispatch(autoLogin());
-  }, [dispatch]);
+  }, []);
 
   React.useEffect(() => {
     window.addEventListener(
@@ -51,13 +53,21 @@ export default function Navbar() {
           placeholder={``}
           variant="small"
           color="blue-gray"
-          className="p-1 font-normal"
+          className="p-1 font-normal !text-black"
         >
           Users
         </Typography>
       </Link>
-      {true && <Link href="/addPlace">Add Place</Link>}
-      {true && <Link href="/places">My Places</Link>}
+      {user.userID && user.token && (
+        <Link href={`${user.userID}/addPlace`} className="!text-black p-1">
+          Add Place
+        </Link>
+      )}
+      {user.userID && user.token && (
+        <Link href="/places" className="!text-black p-1">
+          My Places
+        </Link>
+      )}
     </ul>
   );
   return (
@@ -76,29 +86,43 @@ export default function Navbar() {
           </Typography>
           <div className="flex items-center gap-4">
             <div className="mr-4 hidden lg:block">{navList}</div>
-            <div className="flex items-center gap-x-2">
-              <Link href="login">
-                <Button
-                  placeholder=""
-                  variant="text"
-                  size="sm"
-                  className="hidden lg:inline-block !capitalize text-lg"
-                >
-                  <span>Log In</span>
-                </Button>
-              </Link>
 
-              <Link href="/signup">
-                <Button
-                  placeholder=""
-                  variant="gradient"
-                  size="sm"
-                  className="hidden lg:inline-block !capitalize text-lg"
-                >
-                  <span>Sign Up</span>
-                </Button>
-              </Link>
-            </div>
+            {!user.userID && !user.token && (
+              <div className="flex items-center gap-x-2">
+                <Link href="login">
+                  <Button
+                    placeholder=""
+                    variant="text"
+                    size="sm"
+                    className="hidden lg:inline-block !capitalize text-lg"
+                  >
+                    <span>Log In</span>
+                  </Button>
+                </Link>
+                <Link href="/signup">
+                  <Button
+                    placeholder=""
+                    variant="gradient"
+                    size="sm"
+                    className="hidden lg:inline-block !capitalize text-lg"
+                  >
+                    <span>Sign Up</span>
+                  </Button>
+                </Link>
+              </div>
+            )}
+            {user.userID && user.token && (
+              <Button
+                type="button"
+                onClick={logoutHandler}
+                placeholder=""
+                variant="gradient"
+                size="sm"
+                className="hidden lg:inline-block !capitalize text-lg"
+              >
+                <span>Logout</span>
+              </Button>
+            )}
             <IconButton
               placeholder=""
               variant="text"
@@ -141,31 +165,48 @@ export default function Navbar() {
         </div>
         <Collapse open={openNav}>
           {navList}
-          <div className="flex items-center gap-x-1 w-full">
-            <Link href="/login" className="w-full">
+          {!user.userID && !user.token && (
+            <div className="flex items-center gap-x-1 w-full">
+              <Link href="/login" className="w-full">
+                <Button
+                  placeholder=""
+                  fullWidth
+                  variant="text"
+                  size="sm"
+                  className="!capitalize"
+                >
+                  <span>Log In</span>
+                </Button>
+              </Link>
+
+              <Link href="/signup" className="w-full">
+                <Button
+                  placeholder=""
+                  fullWidth
+                  variant="gradient"
+                  size="sm"
+                  className="!capitalize"
+                >
+                  <span>Sign Up</span>
+                </Button>
+              </Link>
+            </div>
+          )}
+
+          {user.userID && user.token && (
+            <div className="flex items-center gap-x-1 w-full">
               <Button
                 placeholder=""
+                onClick={logoutHandler}
                 fullWidth
                 variant="text"
                 size="sm"
                 className="!capitalize"
               >
-                <span>Log In</span>
+                <span>Log out</span>
               </Button>
-            </Link>
-
-            <Link href="/signup" className="w-full">
-              <Button
-                placeholder=""
-                fullWidth
-                variant="gradient"
-                size="sm"
-                className="!capitalize"
-              >
-                <span>Sign Up</span>
-              </Button>
-            </Link>
-          </div>
+            </div>
+          )}
         </Collapse>
       </NavbarEl>
     </div>

@@ -4,7 +4,7 @@ interface InitialState {
   user: {
     token?: string | null;
     userID?: string | null;
-    expirationDate?: Date | null |string;
+    expirationDate?: Date | null | string;
   };
   loggedIn?: boolean | null;
 }
@@ -29,7 +29,6 @@ const userSlice = createSlice({
   //This object contains the reducer functions for this slice of the Redux store. Reducer functions specify how the state should be updated in response to certain actions
   reducers: {
     login: (state, action) => {
-     
       let { token, userID } = action.payload;
       let expirationDate = new Date(new Date().getTime() + 1000 * 60 * 60);
       let stringifiedObject = JSON.stringify({
@@ -54,20 +53,18 @@ const userSlice = createSlice({
     },
     autoLogin: (state) => {
       let parsedObject = JSON.parse(localStorage.getItem("user") as string);
-
-      let { expirationDate } = state.user;
       if (
         parsedObject &&
         parsedObject.token &&
         parsedObject.userID &&
         state.user &&
-        expirationDate &&
         new Date() < new Date(parsedObject.expirationDate)
       ) {
         state.loggedIn = true;
         state.user.token = parsedObject.token;
         state.user.userID = parsedObject.userID;
-        state.user.expirationDate = new Date(parsedObject.expirationDate);
+        state.user.expirationDate = parsedObject.expirationDate;
+        // stored as ISO String in redux global state
       }
     },
   },

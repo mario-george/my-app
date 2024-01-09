@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { FormEvent, useState } from "react";
 import useHttp from "./useHttp";
 import { useDispatch } from "react-redux";
-
+import { useRouter } from "next/navigation";
 import { login } from "@/components/GlobalRedux/userSlice";
 interface Errors {
   name?: string;
@@ -14,7 +14,7 @@ interface Errors {
 export default function useSignUpForm() {
   const { isLoading, error, sendRequestFormData } = useHttp();
   const dispatch = useDispatch();
-
+  const router = useRouter();
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -85,7 +85,7 @@ export default function useSignUpForm() {
       console.log(data);
       console.log(data);
       dispatch(login({ token, userID: userId }));
-
+      router.push("/");
       /* 
       
       localStorage.setItem("token", data.token);

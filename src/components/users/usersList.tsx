@@ -1,44 +1,54 @@
-import { Avatar, Box, Card, Flex,Text } from "@radix-ui/themes";
+"use client";
+import { Avatar, Box, Card, Flex, Text } from "@radix-ui/themes";
+import Link from "next/link";
+import { User as UserElement } from "@nextui-org/react";
 
-
-export default function Users() {
-  async function getUsers() {
-    const res = await fetch(`${process.env.API_URL}users/signup`);
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    return res.json();
-  }
-
-interface user{
-    name:string,
-    image:string,
-    places:number,
+import { useState, useEffect } from "react";
+interface User {
+  id: string;
+  places: Array;
+  name: string;
+  image: string;
 }
+export default function Users() {
+  const [users, setUsers] = useState([]);
 
-  let users: user[] = [{},{},{}];
+  useEffect(() => {
+    // Fetch data from external API
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}users`)
+      .then((res) => res.json())
+      .then((data) => {
+        setUsers(data.allUsers);
+        console.log(typeof data.allUsers[0]._id);
+        console.log(typeof data.allUsers[0].id);
+      });
+  }, []);
+
   return (
     <>
-      {users.map((u:user) => {
-        return <Card style={{ maxWidth: 240 }} className="my-2">
-        <Flex gap="3" align="center">
-          <Avatar
-            size="3"
-            src={u.image||'/images/defaultImage.svg' }
-            radius="full"
-            fallback="M"
-          />
-          <Box>
-            <Text as="div" size="2" weight="bold">
-              Mario George
-            </Text>
-            <Text as="div" size="2" color="gray">
-              Engineering
-            </Text>
-          </Box>
-        </Flex>
-      </Card>;
-      })}
+      {users.length !== 0 ? (
+        users?.map((u: User) => {
+          let imageURL = `${process.env.NEXT_PUBLIC_URL_BACKEND}${u.image}`;
+          let descriptionInfo =
+            u.places.length === 0 ? "No Places" : "Places :" + u.places.length;
+          return (
+            <>
+              <Link href={`${u.id}/places`}>
+                <UserElement
+                  className="my-2 mr-auto"
+                  name={u.name}
+                  description={descriptionInfo}
+                  avatarProps={{
+                    src: imageURL,
+                  }}
+                />
+              </Link>
+            </>
+          );
+        })
+      ) : (
+        <>Loading</>
+      )}
     </>
   );
 }

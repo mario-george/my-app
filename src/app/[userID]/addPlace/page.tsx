@@ -46,10 +46,15 @@ const AddPlacePage = (props: Props) => {
   return (
     <Card className="mx-[4rem] my-[1rem]">
       <CardHeader className="px-4 pt-12 pb-6 flex-col items-start">
-        <h1 className="font-bold pl-[1rem] text-xl">
-          Add a Place
+        <h1 className="flex font-bold pl-[1rem] text-xl">
           <span>
+          Add a Place
+          
+          
             <IoAddSharp />
+                   </span>     
+                   
+                     <span>
           </span>
         </h1>
       </CardHeader>
@@ -71,14 +76,7 @@ const AddPlacePage = (props: Props) => {
             onChange={handleChange}
             required
           />
-          <Spacer y={1} />
-          <Input
-            label="Location"
-            name="location"
-            value={formState.location}
-            onChange={handleChange}
-            required
-          />
+  
           <Spacer y={1} />
           <Input
             label="Description"

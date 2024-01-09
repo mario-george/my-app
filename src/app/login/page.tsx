@@ -1,16 +1,16 @@
 "use client";
+import { Button } from "@nextui-org/react";
 import useSignInForm from "@/components/hooks/useSignInForm";
 import {
   Card,
   Input,
   Checkbox,
-  Button,
+  
   Typography,
 } from "@/components/shared/material-tailwind";
 import Link from "next/link";
-
 export default function LoginPage() {
-  const { formState, errors, handleChange, handleSubmit } = useSignInForm();
+  const { formState, errors, handleChange, handleSubmit,isLoading } = useSignInForm();
 
   return (
     <div className="w-full mx-auto flex justify-center my-[1.5rem]">
@@ -80,10 +80,9 @@ export default function LoginPage() {
           </div>
 
           <Button
-            placeholder={``}
             className="mt-6 !capitalize !bg-blue-500"
             fullWidth
-            type="submit"
+            type="submit" isLoading={isLoading}
           >
             Login
           </Button>

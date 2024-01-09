@@ -47,7 +47,8 @@ const useHttp = () => {
   const sendRequestFormData = async (
     url: string,
     method: string = "POST",
-    body: FormData
+    body: FormData,
+    headers:any={}
   ) => {
     setIsLoading(true);
     setError(null);
@@ -58,7 +59,9 @@ const useHttp = () => {
     try {
       const response = await fetch(url, {
         method,
-        body: body,
+        body: body,headers:{
+          ...headers
+        }
       });
 
       const data = await response.json();

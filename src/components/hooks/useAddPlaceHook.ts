@@ -9,9 +9,19 @@ interface Errors {
   location?: string;
   description?: string;
 }
-
+interface RootState {
+  user: {
+    user: {
+      token?: string | null;
+      userID?: string | null;
+      expirationDate?: Date | null;
+    };
+    loggedIn?: boolean | null;
+  };
+}
 export default function useAddPlaceHook({ userID }:{userID:string}) {
   const { isLoading, error, sendRequestFormData } = useHttp();
+  const token = useSelector((state:RootState)=>state.user.user.token)
 const router= useRouter()
   const [formState, setFormState] = useState({
     title: "",
@@ -70,7 +80,7 @@ const router= useRouter()
       // Send the FormData object in the body of the add place request
       const data = await sendRequestFormData("places/", "POST", formData,
       {
-        'Authorization':'Bearer '+'token'
+        'Authorization':'Bearer '+token
       });
       console.log(data)
       console.log(data)

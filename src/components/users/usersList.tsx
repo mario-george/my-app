@@ -1,13 +1,14 @@
 "use client";
 import { Avatar, Box, Card, Flex, Text } from "@radix-ui/themes";
 import Link from "next/link";
+import { User as UserElement } from "@nextui-org/react";
 
 import { useState, useEffect } from "react";
-interface User{
-  id:string,
-  places:Array,
-  name:string,
-  image:string,
+interface User {
+  id: string;
+  places: Array;
+  name: string;
+  image: string;
 }
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -26,31 +27,23 @@ export default function Users() {
   return (
     <>
       {users.length !== 0 ? (
-        users?.map((u:User) => {
+        users?.map((u: User) => {
+          let imageURL = `${process.env.NEXT_PUBLIC_URL_BACKEND}${u.image}`;
+          let descriptionInfo =
+            u.places.length === 0 ? "No Places" : "Places :" + u.places.length;
           return (
-            
-            <Card style={{ maxWidth: 240 }} className="my-2">
-                <Link href={`${u.id}/places`}>
-
-
-              <Flex gap="3" align="center">
-                <Avatar
-                  size="3"
-                  src={`http://localhost:3003/${u.image}`}
-                  radius="full"
-                  fallback="M"
+            <>
+              <Link href={`${u.id}/places`}>
+                <UserElement
+                  className="my-2 mr-auto"
+                  name={u.name}
+                  description={descriptionInfo}
+                  avatarProps={{
+                    src: imageURL,
+                  }}
                 />
-                <Box>
-                  <Text as="div" size="2" weight="bold">
-                    {u.name}{" "}
-                  </Text>
-                  <Text as="div" size="2" color="gray">
-                    {u.places.length}{" "}
-                  </Text>
-                </Box>
-              </Flex>
-            </Link>
-            </Card>
+              </Link>
+            </>
           );
         })
       ) : (

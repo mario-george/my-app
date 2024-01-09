@@ -30,7 +30,19 @@ export default function usePlaceHandler(placeID:string) {
   const [errors, setErrors] = useState<Errors>({});
 
   const validateForm = () => {
-   
+    let errors: Errors = {};
+    if (!formState.title) {
+      errors.title = "Title is required.";
+    } 
+     if (!formState.address) {
+      errors.address = "Address is invalid.";
+    }
+    if (!formState.description) {
+      errors.description = "Description is required.";
+    } else if (formState.description.length < 6) {
+      errors.description = "Description must be at least 6 characters.";
+    }
+    setErrors(errors);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

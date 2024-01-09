@@ -27,10 +27,24 @@ interface RootState {
   };
 }
 const Place = (props: Props) => {
- 
+  const [places, setPlaces] = useState([]);
+  const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
+  const GlobalStateUser = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
-   
+    let fetchPlaces = async () => {
+      const resp = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}places/user/${props.params.userID}`
+      );
+      const respData = await resp.json();
+      console.log(respData);
+      setPlaces(respData.places);
+    };
+    // Fetch data from external API
+    fetchPlaces();
+    if (GlobalStateUser.userID === props.params.userID) {
+      setIsAuthorized(true);
+    }
   }, []);
 
   const deletePlaceHandler = async () => {

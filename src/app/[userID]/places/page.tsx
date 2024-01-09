@@ -2,6 +2,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import PlaceCard from "@/components/UI/PlaceCard";
 import {
   Card,
   CardHeader,
@@ -47,13 +48,27 @@ const Place = (props: Props) => {
     }
   }, []);
 
-  const deletePlaceHandler = async () => {
-   
-  };
+
 
   return (
     <>
-    
+      {places.length !== 0 ? (
+        places.map((p) => {
+          const { image, description, title, id, address } = p;
+          return (
+            <PlaceCard
+              image={image}
+              description={description}
+              title={title}
+              address={address}
+              id={id}
+              isAuthorized={isAuthorized}
+            />
+          );
+        })
+      ) : (
+        <>No places found for the user</>
+      )}
     </>
   );
 };

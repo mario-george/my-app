@@ -16,7 +16,16 @@ interface Props {
     userID: string;
   };
 }
-
+interface RootState {
+  user: {
+    user: {
+      token?: string | null;
+      userID?: string | null;
+      expirationDate?: Date | null;
+    };
+    loggedIn?: boolean | null;
+  };
+}
 const Place = (props: Props) => {
  
 

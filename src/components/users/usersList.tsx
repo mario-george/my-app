@@ -3,7 +3,12 @@ import { Avatar, Box, Card, Flex, Text } from "@radix-ui/themes";
 import Link from "next/link";
 
 import { useState, useEffect } from "react";
-
+interface User{
+  id:string,
+  places:Array,
+  name:string,
+  image:string,
+}
 export default function Users() {
   const [users, setUsers] = useState([]);
 

@@ -1,5 +1,4 @@
 "use client";
-import Cookies from "js-cookie";
 import { FormEvent, useState } from "react";
 import useHttp from "./useHttp";
 import { useDispatch } from "react-redux";
@@ -73,9 +72,7 @@ export default function useSignUpForm() {
       formData.append("email", formState.email);
       formData.append("password", formState.password);
 
-      for (let [key, value] of formData?.entries()) {
-        console.log(key, value);
-      }
+
 
       // Send the FormData object in the body of the signup request
       const data = await sendRequestFormData("users/signup", "POST", formData);

@@ -6,7 +6,7 @@ import { User as UserElement } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 interface User {
   id: string;
-  places: Array;
+  places: Array<any>;
   name: string;
   image: string;
 }

@@ -13,28 +13,29 @@ import {
 import { useState } from "react";
 
 export default function SignUpPage() {
-  const [image, setImage] = useState('/images/noImage.jpg'); // Set the initial image to the default image
+  const [image, setImage] = useState("/images/noImage.jpg"); // Set the initial image to the default image
 
   const { formState, errors, handleChange, handleSubmit, isLoading } =
     useSignUpForm();
-  const handleImageUpload = (event:React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Handle the image file upload
-    let file
-    if (event.target.files && event.target.files.length===1 ){
-
+    let file;
+    if (event.target.files && event.target.files.length === 1) {
       file = event.target.files[0];
-      readImage(file)
+      readImage(file);
     }
-  };const readImage = (file) => {
+  };
+  const readImage = (file: File) => {
     const reader = new FileReader();
 
     reader.onloadend = () => {
-      setImage(reader.result);
+      if (typeof reader.result === "string") {
+        setImage(reader.result);
+      }
     };
 
     reader.readAsDataURL(file);
   };
-
 
   return (
     <div className="w-full mx-auto flex justify-center my-[1.5rem]">
@@ -138,7 +139,8 @@ export default function SignUpPage() {
               onChange={handleImageUpload}
               style={{ display: "none" }}
               id="image-upload"
-            /><img src={image} alt="Uploaded" />
+            />
+            <img src={image} alt="Uploaded" />
             <Button
               color="success"
               type="button"

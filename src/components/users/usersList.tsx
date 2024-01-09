@@ -1,44 +1,46 @@
-import { Avatar, Box, Card, Flex,Text } from "@radix-ui/themes";
+"use client";
+import { Avatar, Box, Card, Flex, Text } from "@radix-ui/themes";
+import Link from "next/link";
 
+import { useState, useEffect } from "react";
 
 export default function Users() {
-  async function getUsers() {
-    const res = await fetch(`${process.env.API_URL}users/signup`);
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    return res.json();
-  }
+  const [users, setUsers] = useState([]);
 
-interface user{
-    name:string,
-    image:string,
-    places:number,
-}
-
-  let users: user[] = [{},{},{}];
+  
   return (
     <>
-      {users.map((u:user) => {
-        return <Card style={{ maxWidth: 240 }} className="my-2">
-        <Flex gap="3" align="center">
-          <Avatar
-            size="3"
-            src={u.image||'/images/defaultImage.svg' }
-            radius="full"
-            fallback="M"
-          />
-          <Box>
-            <Text as="div" size="2" weight="bold">
-              Mario George
-            </Text>
-            <Text as="div" size="2" color="gray">
-              Engineering
-            </Text>
-          </Box>
-        </Flex>
-      </Card>;
-      })}
+      {users.length !== 0 ? (
+        users?.map((u) => {
+          return (
+            
+            <Card style={{ maxWidth: 240 }} className="my-2">
+                <Link href={`${u.id}/places`}>
+
+
+              <Flex gap="3" align="center">
+                <Avatar
+                  size="3"
+                  src={`http://localhost:3003/${u.image}`}
+                  radius="full"
+                  fallback="M"
+                />
+                <Box>
+                  <Text as="div" size="2" weight="bold">
+                    {u.name}{" "}
+                  </Text>
+                  <Text as="div" size="2" color="gray">
+                    {u.places.length}{" "}
+                  </Text>
+                </Box>
+              </Flex>
+            </Link>
+            </Card>
+          );
+        })
+      ) : (
+        <>Loading</>
+      )}
     </>
   );
 }

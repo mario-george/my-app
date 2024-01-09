@@ -36,9 +36,63 @@ export default function PlaceCard({
   isAuthorized: boolean;
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+const {formState, errors, handleChange, handleUpdate, isLoading ,handleDeletePlace} = usePlaceHandler(id)
   image = process.env.NEXT_PUBLIC_URL_BACKEND+ image;
   console.log(isAuthorized);
- 
+  let modal = (
+    <Modal
+      backdrop="opaque"
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      motionProps={{
+        variants: {
+          enter: {
+            y: 0,
+            opacity: 1,
+            transition: {
+              duration: 0.3,
+              ease: "easeOut",
+            },
+          },
+          exit: {
+            y: -20,
+            opacity: 0,
+            transition: {
+              duration: 0.2,
+              ease: "easeIn",
+            },
+          },
+        },
+      }}
+    >
+      <ModalContent>
+        {(onClose) => (
+          <>
+            <ModalHeader className="flex flex-col gap-1">
+              Confirmation
+            </ModalHeader>
+            <ModalBody>
+              <p>Are you sure you want to delete the selected place</p>
+              <p>
+                This action cann't be reversed,this place will be forever lost.
+              </p>
+            </ModalBody>
+            <ModalFooter>
+              <Button variant="light" onPress={onClose}>
+                Close
+              </Button>
+              <Button color="danger" onPress={()=>{
+                handleDeletePlace()
+                onClose()
+              }}>
+                Delete
+              </Button>
+            </ModalFooter>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
+  );
   const [editMode, setEditMode] = useState(false);
 
   return (

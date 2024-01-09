@@ -53,13 +53,21 @@ export default function Navbar() {
           placeholder={``}
           variant="small"
           color="blue-gray"
-          className="p-1 font-normal"
+          className="p-1 font-normal !text-black"
         >
           Users
         </Typography>
       </Link>
-      {user.userID && user.token && <Link href="/addPlace" className="!text-black p-1">Add Place</Link>}
-      {user.userID && user.token && <Link href="/places" className="!text-black p-1">My Places</Link>}
+      {user.userID && user.token && (
+        <Link href={`${user.userID}/addPlace`} className="!text-black p-1">
+          Add Place
+        </Link>
+      )}
+      {user.userID && user.token && (
+        <Link href="/places" className="!text-black p-1">
+          My Places
+        </Link>
+      )}
     </ul>
   );
   return (
@@ -185,20 +193,18 @@ export default function Navbar() {
             </div>
           )}
 
-{user.userID && user.token && (
+          {user.userID && user.token && (
             <div className="flex items-center gap-x-1 w-full">
-                <Button
-                  placeholder=""
-                  onClick={logoutHandler}
-                  fullWidth
-                  variant="text"
-                  size="sm"
-                  className="!capitalize"
-                >
-                  <span>Log out</span>
-                </Button>
-
-             
+              <Button
+                placeholder=""
+                onClick={logoutHandler}
+                fullWidth
+                variant="text"
+                size="sm"
+                className="!capitalize"
+              >
+                <span>Log out</span>
+              </Button>
             </div>
           )}
         </Collapse>

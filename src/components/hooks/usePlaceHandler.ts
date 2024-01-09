@@ -40,7 +40,31 @@ export default function usePlaceHandler(placeID:string) {
 const handleDeletePlace=()=>{
 }
   const handleUpdate = async (event: FormEvent) => {
-    
+    event.preventDefault();
+
+   
+    validateForm();
+    if (Object.keys(errors).length === 0) {
+      console.log("Place data has no errors!");
+
+      let respData;
+      try {
+        respData = await sendRequest(placeID, "PATCH", formState);
+        console.log(respData);
+      } catch (err) {
+        console.log(errors);
+      }
+
+      if (error) {
+        console.log(error);
+        errors.back = error;
+        setErrors(errors);
+      }
+ 
+  
+    } else {
+      console.log("There are errors. Please correct them.");
+    }
   };
 
   return { formState, errors, handleChange, handleUpdate, isLoading ,handleDeletePlace};

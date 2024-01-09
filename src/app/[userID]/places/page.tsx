@@ -11,9 +11,13 @@ import {
   Button,
   Textarea,
 } from "@nextui-org/react";
+interface Props {
+  params: {
+    userID: string;
+  };
+}
 
-
-const Place = (props) => {
+const Place = (props: Props) => {
  
 
   useEffect(() => {

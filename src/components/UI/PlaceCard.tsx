@@ -140,7 +140,22 @@ const {formState, errors, handleChange, handleUpdate, isLoading ,handleDeletePla
   );
   return (
     <>
-   
+    {modal}
+    <Card className="shadow-lg mx-auto w-full xl:w-[55%] md:w-[80%] border my-6">
+      <CardHeader>
+        <div className="mx-auto flex justify-center w-full">
+          <Image src={image} alt="image" />
+        </div>
+        <div className="absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-blue-300/10 " />
+      </CardHeader>
+      <CardBody className="z-30">
+        {content}
+       
+      </CardBody>
+      <CardFooter className="pt-3 flex flex-col space-y-3 z-30">
+        {Buttons}
+      </CardFooter>
+    </Card>
     </>
   );
 }

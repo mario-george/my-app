@@ -2,6 +2,12 @@ import { FormEvent, useState } from "react";
 import useHttp from "./useHttp";
 import { useSelector } from "react-redux";
 
+interface Errors {
+  title?: string;
+  description?: string;
+  address?: string;
+  back?: string;
+}
 
 export default function usePlaceHandler(placeID:string) {
   const { isLoading, error, sendRequest } = useHttp();
@@ -12,7 +18,7 @@ export default function usePlaceHandler(placeID:string) {
     address: "",
     description: "",
   });
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<Errors>({});
 
   const validateForm = () => {
    

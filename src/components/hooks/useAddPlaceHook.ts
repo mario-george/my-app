@@ -1,7 +1,8 @@
 "use client";
 import { FormEvent, useState } from "react";
 import useHttp from "./useHttp";
-
+import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 interface Errors {
   title?: string;
   address?: string;
@@ -11,11 +12,10 @@ interface Errors {
 
 export default function useAddPlaceHook({ userID }:{userID:string}) {
   const { isLoading, error, sendRequestFormData } = useHttp();
-
+const router= useRouter()
   const [formState, setFormState] = useState({
     title: "",
     address: "",
-    location: "",
     description: "",
   });
   const [errors, setErrors] = useState<Errors>({});
@@ -27,9 +27,7 @@ export default function useAddPlaceHook({ userID }:{userID:string}) {
     if (!formState.address) {
       errors.title = "address is required.";
     }
-    if (!formState.location) {
-      errors.title = "location is required.";
-    }
+ 
     if (!formState.description) {
       errors.title = "description is required.";
     }
@@ -66,11 +64,18 @@ export default function useAddPlaceHook({ userID }:{userID:string}) {
       formData.append("title", formState.title);
       formData.append("address", formState.address);
       formData.append("description", formState.description);
-      formData.append("location", formState.location);
       formData.append("creator", userID);
+      console.log(formState)
 
       // Send the FormData object in the body of the add place request
-      const data = await sendRequestFormData("places/", "POST", formData);
+      const data = await sendRequestFormData("places/", "POST", formData,
+      {
+        'Authorization':'Bearer '+'token'
+      });
+      console.log(data)
+      console.log(data)
+      console.log(data)
+      router.push('/')
     } else {
       console.log("Form has errors. Please correct them.");
     }

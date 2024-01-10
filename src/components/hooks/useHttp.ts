@@ -47,21 +47,21 @@ const useHttp = () => {
   const sendRequestFormData = async (
     url: string,
     method: string = "POST",
-    body: FormData,
-    headers:any={}
+    body: FormData =null,
+    headers: any = {}
   ) => {
     setIsLoading(true);
     setError(null);
 
     url = process.env.NEXT_PUBLIC_API_URL + url;
 
-    
     try {
       const response = await fetch(url, {
         method,
-        body: body,headers:{
-          ...headers
-        }
+        body: body,
+        headers: {
+          ...headers,
+        },
       });
 
       const data = await response.json();

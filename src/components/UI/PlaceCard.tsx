@@ -37,7 +37,10 @@ export default function PlaceCard({
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 const {formState, errors, handleChange, handleUpdate, isLoading ,handleDeletePlace} = usePlaceHandler(id)
-  image = process.env.NEXT_PUBLIC_URL_BACKEND+ image;
+let imageURL =
+process.env.NEXT_PUBLIC_DEV === "true"
+  ? `${process.env.NEXT_PUBLIC_URL_BACKEND}${image}`
+  : image;
   console.log(isAuthorized);
   let modal = (
     <Modal
@@ -144,7 +147,7 @@ const {formState, errors, handleChange, handleUpdate, isLoading ,handleDeletePla
     <Card className="shadow-lg mx-auto w-full xl:w-[55%] md:w-[80%] border my-6">
       <CardHeader>
         <div className="mx-auto flex justify-center w-full">
-          <Image src={image} alt="image" />
+          <Image src={imageURL} alt="image" />
         </div>
         <div className="absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-blue-300/10 " />
       </CardHeader>

@@ -19,8 +19,7 @@ export default function Users() {
       .then((res) => res.json())
       .then((data) => {
         setUsers(data.allUsers);
-        console.log(typeof data.allUsers[0]._id);
-        console.log(typeof data.allUsers[0].id);
+        console.log(data.allUsers[0].image);
       });
   }, []);
 
@@ -28,7 +27,12 @@ export default function Users() {
     <>
       {users.length !== 0 ? (
         users?.map((u: User) => {
-          let imageURL = `${process.env.NEXT_PUBLIC_URL_BACKEND}${u.image}`;
+          let imageURL =
+            process.env.NEXT_PUBLIC_DEV === "true"
+              ? `${process.env.NEXT_PUBLIC_URL_BACKEND}${u.image}`
+              : u.image;
+          console.log(process.env.NEXT_PUBLIC_DEV);
+          console.log(imageURL);
           let descriptionInfo =
             u.places.length === 0 ? "No Places" : "Places :" + u.places.length;
           return (

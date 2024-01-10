@@ -52,8 +52,10 @@ export default function usePlaceHandler(placeID:string) {
     });
 
   };
-const handleDeletePlace=()=>{
-    alert('Works')
+const handleDeletePlace=async()=>{
+  let respData = await sendRequest(placeID, "DELETE",null,{
+    'Authorization':'Bearer '+token
+  });
 }
   const handleUpdate = async (event: FormEvent) => {
     event.preventDefault();
@@ -65,7 +67,11 @@ const handleDeletePlace=()=>{
 
       let respData;
       try {
-        respData = await sendRequest(placeID, "PATCH", formState);
+        respData = await sendRequest(placeID, "PATCH", formState,
+        {
+          'Authorization':'Bearer '+token
+        }
+        );
         console.log(respData);
       } catch (err) {
         console.log(errors);

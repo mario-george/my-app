@@ -19,8 +19,7 @@ export default function Users() {
       .then((res) => res.json())
       .then((data) => {
         setUsers(data.allUsers);
-        console.log(typeof data.allUsers[0]._id);
-        console.log(typeof data.allUsers[0].id);
+
       });
   }, []);
 

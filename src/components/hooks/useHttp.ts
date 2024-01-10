@@ -47,7 +47,7 @@ const useHttp = () => {
   const sendRequestFormData = async (
     url: string,
     method: string = "POST",
-    body: FormData =null,
+    body: FormData|null =null,
     headers: any = {}
   ) => {
     setIsLoading(true);

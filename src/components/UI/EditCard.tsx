@@ -32,6 +32,7 @@ export default function EditCard({
   id: string;
   setEditMode:(value:boolean)=>void
 }) {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const {
     formState,
@@ -50,7 +51,25 @@ export default function EditCard({
    
   );
   let Buttons = (
-    <>
+    <> <Button
+    size="lg"
+    className="text-lg"
+    fullWidth
+    color="primary"
+    variant="ghost"
+    onClick={onOpen}
+  >
+    Submit{" "}
+  </Button>
+      <Button
+        size="lg"
+        className="text-lg"
+        fullWidth
+        color="secondary"
+        variant="ghost"
+        onClick={() => setEditMode(false)}      >
+        Cancel{" "}
+      </Button>{" "}
      
     </>
   );

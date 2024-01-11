@@ -70,7 +70,9 @@ export default function EditCard({
               <label>Title</label>
 
               <Input
-                
+                value={formState.title}
+                name="title"
+                onChange={handleChange}
                 className="max-w-xs z-30  !w-full !md:w-auto "
                 variant="faded"
               />
@@ -82,7 +84,9 @@ export default function EditCard({
               <Input
                 variant="faded"
                 className="max-w-xs z-30  "
-                
+                value={formState.address}
+                name="address"
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -90,9 +94,12 @@ export default function EditCard({
           <div className="flex flex-col  space-y-2 my-4 w-full">
             <label>Description</label>
             <Textarea
+              name="description"
               placeholder="Enter your description"
               className="z-30 "
+              onChange={handleChange}
               variant="faded"
+              value={formState.description}
               fullWidth
             />
           </div>

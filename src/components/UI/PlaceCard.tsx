@@ -7,6 +7,8 @@ import {
   Button,
   Textarea,
 } from "@nextui-org/react";
+import { Spinner } from "@nextui-org/react";
+
 import Link from "next/link";
 import { Typography } from "@material-tailwind/react";
 import { Image } from "@nextui-org/react";
@@ -19,7 +21,8 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@nextui-org/react";
-import usePlaceHandler from '@/components/hooks/usePlaceHandler'
+import usePlaceHandler from "@/components/hooks/usePlaceHandler";
+import EditCard from "./EditCard";
 export default function PlaceCard({
   title,
   address,
@@ -36,12 +39,44 @@ export default function PlaceCard({
   isAuthorized: boolean;
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-const {formState, errors, handleChange, handleUpdate, isLoading ,handleDeletePlace} = usePlaceHandler(id)
-let imageURL =
-process.env.NEXT_PUBLIC_DEV === "true"
-  ? `${process.env.NEXT_PUBLIC_URL_BACKEND}${image}`
-  : image;
+  const [editMode, setEditMode] = useState(false);
+
+  const [coverSpinner, setCoverSpinner] = useState(false);
+
+  const {
+    formState,
+    errors,
+    handleChange,
+    handleUpdate,
+    isLoading,
+    handleDeletePlace,
+  } = usePlaceHandler({ placeID: id, setEditMode });
+  const handleEditPlace = () => {
+    setCoverSpinner(true);
+    setTimeout(() => {
+      setCoverSpinner(false);
+      setEditMode(true);
+    }, 1000);  };
+  let imageURL =
+    process.env.NEXT_PUBLIC_DEV === "true"
+      ? `${process.env.NEXT_PUBLIC_URL_BACKEND}${image}`
+      : image;
   console.log(isAuthorized);
+
+  if (editMode) {
+    return (
+      <EditCard
+        key={id}
+        image={image}
+        description={description}
+        title={title}
+        address={address}
+        id={id}
+        setEditMode={setEditMode}
+      />
+    );
+  }
+
   let modal = (
     <Modal
       backdrop="opaque"
@@ -84,10 +119,13 @@ process.env.NEXT_PUBLIC_DEV === "true"
               <Button variant="light" onPress={onClose}>
                 Close
               </Button>
-              <Button color="danger" onPress={()=>{
-                handleDeletePlace()
-                onClose()
-              }}>
+              <Button
+                color="danger"
+                onPress={() => {
+                  handleDeletePlace();
+                  onClose();
+                }}
+              >
                 Delete
               </Button>
             </ModalFooter>
@@ -96,8 +134,6 @@ process.env.NEXT_PUBLIC_DEV === "true"
       </ModalContent>
     </Modal>
   );
-  const [editMode, setEditMode] = useState(false);
-  let content = isAuthorized ? <></> : <></>;
   let Buttons = isAuthorized ? (
     <>
       {" "}
@@ -112,6 +148,7 @@ process.env.NEXT_PUBLIC_DEV === "true"
       </Button>
       <Button
         size="lg"
+        onClick={handleEditPlace}
         className="text-lg"
         fullWidth
         color="secondary"
@@ -142,58 +179,60 @@ process.env.NEXT_PUBLIC_DEV === "true"
     </Button>
   );
   return (
-    <>
-    {modal}
-    <Card className="shadow-lg mx-auto w-full xl:w-[55%] md:w-[80%] border my-6">
-      <CardHeader>
-        <div className="mx-auto flex justify-center w-full">
-          <Image src={imageURL} alt="image" />
-        </div>
-        <div className="absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-blue-300/10 " />
-      </CardHeader>
-      <CardBody className="z-30">
-        {content}
-        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0">
-          <div className="flex flex-col md:w-1/2 space-y-2 ">
-            <label>Title</label>
+    <div className={`relative ${coverSpinner ? `bg-white/30 `:``}`}>
+      {coverSpinner ?   <div className="flex justify-center items-center h-full w-full absolute inset-0 bg-white opacity-75 z-50">
+      <Spinner size="lg" />
+    </div>:null}
+      {modal}
+      <Card className="shadow-lg mx-auto w-full xl:w-[55%] md:w-[80%] border my-6">
+        <CardHeader>
+          <div className="mx-auto flex justify-center w-full">
+            <Image src={imageURL} alt="image" className="max-w-full h-auto" />
+          </div>
+          <div className="absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-blue-300/10 " />
+        </CardHeader>
+        <CardBody className="z-30">
+          <div className="flex flex-col md:flex-row space-y-2 md:space-y-0">
+            <div className="flex flex-col md:w-1/2 space-y-2 ">
+              <label>Title</label>
 
-            <Input
-              isDisabled={true}
-              defaultValue={title}
-              className="max-w-xs z-30 !opacity-100 !w-full !md:w-auto "
-              variant="faded"
-            />
+              <Input
+                isDisabled={true}
+                defaultValue={title}
+                className="max-w-xs z-30 !opacity-100 !w-full !md:w-auto "
+                variant="faded"
+              />
+            </div>
+
+            <div className="flex flex-col md:w-1/2 space-y-2">
+              <label>Address</label>
+
+              <Input
+                isDisabled={true}
+                defaultValue={address}
+                variant="faded"
+                className="max-w-xs z-30 !opacity-100 "
+              />
+            </div>
           </div>
 
-          <div className="flex flex-col md:w-1/2 space-y-2">
-            <label>Address</label>
-
-            <Input
+          <div className="flex flex-col  space-y-2 my-4 w-full">
+            <label>Description</label>
+            <Textarea
+              placeholder="Enter your description"
+              className="z-30 !opacity-100"
+              defaultValue={description}
+              onValueChange={(v) => {}}
               isDisabled={true}
-              defaultValue={address}
               variant="faded"
-              className="max-w-xs z-30 !opacity-100 "
+              fullWidth
             />
           </div>
-        </div>
-
-        <div className="flex flex-col  space-y-2 my-4 w-full">
-          <label>Description</label>
-          <Textarea
-            placeholder="Enter your description"
-            className="z-30 !opacity-100"
-            defaultValue={description}
-            onValueChange={(v) => {}}
-            isDisabled={true}
-            variant="faded"
-            fullWidth
-          />
-        </div>
-      </CardBody>
-      <CardFooter className="pt-3 flex flex-col space-y-3 z-30">
-        {Buttons}
-      </CardFooter>
-    </Card>
-    </>
+        </CardBody>
+        <CardFooter className="pt-3 flex flex-col space-y-3 z-30">
+          {Buttons}
+        </CardFooter>
+      </Card>
+    </div>
   );
 }

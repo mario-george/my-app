@@ -18,13 +18,14 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import usePlaceHandler from "@/components/hooks/usePlaceHandler";
+import { Spinner } from "@nextui-org/react";
 export default function EditCard({
   title,
   address,
   description,
   image,
   id,
-  setEditMode,
+  setEditMode,setEditSuccess
 }: {
   title: string;
   address: string;
@@ -32,8 +33,20 @@ export default function EditCard({
   image: string;
   id: string;
   setEditMode: (value: boolean) => void;
+  setEditSuccess: (value: boolean) => void;
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [coverSpinner, setCoverSpinner] = useState(false);
+
+const handleEditSubmit = () => {
+  
+    setCoverSpinner(true);
+    setTimeout(() => {
+      setCoverSpinner(false);
+      setEditMode(false);
+      setEditSuccess(true)
+    }, 1000);  
+}
 
   const {
     formState,
@@ -90,7 +103,7 @@ export default function EditCard({
               <Button
                 color="primary"
                 onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-                  handleUpdate(event);
+                  handleUpdate(event,handleEditSubmit);
                   onClose();
                 }}
               >
@@ -128,8 +141,11 @@ export default function EditCard({
     </>
   );
   return (
-    <>
+    <div className={`relative ${coverSpinner ? `bg-white/30 `:``}`}>
       {modal}
+      {coverSpinner ?   <div className="flex justify-center items-center h-full w-full absolute inset-0 bg-white opacity-75 z-50">
+      <Spinner size="lg" />
+    </div>:null}
       <Card className="shadow-lg mx-auto w-full xl:w-[55%] md:w-[80%] border my-6">
         <CardHeader>
           <div className="mx-auto flex justify-center w-full">
@@ -150,7 +166,7 @@ export default function EditCard({
                 variant="faded"
               />
             </div>
-
+{/* will add the ability to update address in the future */}
             <div className="flex flex-col md:w-1/2 space-y-2">
               <label>Address</label>
 
@@ -160,6 +176,7 @@ export default function EditCard({
                 value={formState.address}
                 name="address"
                 onChange={handleChange}
+                isDisabled
               />
             </div>
           </div>
@@ -181,6 +198,6 @@ export default function EditCard({
           {Buttons}
         </CardFooter>
       </Card>
-    </>
+    </div>
   );
 }

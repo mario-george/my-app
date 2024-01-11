@@ -64,7 +64,7 @@ const Place = (props: Props) => {
     if (GlobalStateUser.userID === props.params.userID) {
       setIsAuthorized(true);
     }
-  }, []);
+  }, [GlobalStateUser]);
 
   return (
     <>

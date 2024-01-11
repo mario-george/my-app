@@ -6,7 +6,11 @@ const ToastComponent = (
   descriptionText}:{ titleText:string,
     descriptionText:string}
 ) => {
+React.useEffect(()=>{
 
+let buttonEl=  document.getElementById('toast-button') as HTMLButtonElement
+buttonEl.click()
+},[])
   return (
     <Toast.Provider swipeDirection="right">
    </Toast.Provider>

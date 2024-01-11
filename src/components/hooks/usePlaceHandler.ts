@@ -68,7 +68,7 @@ export default function usePlaceHandler({
       Authorization: "Bearer " + token,
     });
   };
-  const handleUpdate = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleUpdate = async (event: React.MouseEvent<HTMLButtonElement>,handleEditSubmit:()=>void) => {
     event.preventDefault();
 
     validateForm();
@@ -81,6 +81,8 @@ export default function usePlaceHandler({
           Authorization: "Bearer " + token,
         });
         console.log(respData);
+
+        handleEditSubmit()
 
       } catch (err) {
         console.log(err);

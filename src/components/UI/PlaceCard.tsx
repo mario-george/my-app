@@ -8,6 +8,7 @@ import {
   Textarea,
 } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/react";
+<ToastComponent titleText="lololo" descriptionText="lolloll"/>
 
 import Link from "next/link";
 import { Typography } from "@material-tailwind/react";
@@ -23,6 +24,8 @@ import {
 } from "@nextui-org/react";
 import usePlaceHandler from "@/components/hooks/usePlaceHandler";
 import EditCard from "./EditCard";
+import ToastComponent from '@/components/UI/Toast'
+
 export default function PlaceCard({
   title,
   address,
@@ -40,6 +43,7 @@ export default function PlaceCard({
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [editMode, setEditMode] = useState(false);
+  const [editSuccess, setEditSuccess] = useState(false);
 
   const [coverSpinner, setCoverSpinner] = useState(false);
 
@@ -73,6 +77,7 @@ export default function PlaceCard({
         address={address}
         id={id}
         setEditMode={setEditMode}
+        setEditSuccess={setEditSuccess}
       />
     );
   }
@@ -180,6 +185,10 @@ export default function PlaceCard({
   );
   return (
     <div className={`relative ${coverSpinner ? `bg-white/30 `:``}`}>
+      {editSuccess && 
+<ToastComponent titleText="Success" descriptionText="Place info has been updated successfully. "/>
+      
+      }
       {coverSpinner ?   <div className="flex justify-center items-center h-full w-full absolute inset-0 bg-white opacity-75 z-50">
       <Spinner size="lg" />
     </div>:null}
@@ -233,6 +242,7 @@ export default function PlaceCard({
           {Buttons}
         </CardFooter>
       </Card>
-    </div>
+      
+          </div>
   );
 }

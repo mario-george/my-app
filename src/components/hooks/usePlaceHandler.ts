@@ -20,18 +20,24 @@ interface RootState {
 }
 export default function usePlaceHandler({
   placeID,
-  setEditMode,title,address,description
+  setEditMode,
+  title,
+  address,
+  description,
 }: {
   placeID: string;
-  setEditMode?: (value: boolean) => void;title?:string,address?:string,description?:string
+  setEditMode?: (value: boolean) => void;
+  title?: string;
+  address?: string;
+  description?: string;
 }) {
   const { isLoading, error, sendRequest } = useHttp();
   const token = useSelector((state: RootState) => state.user.user.token);
 
   const [formState, setFormState] = useState({
-    title: title?title:"",
-    address: address?address:"",
-    description: description?description:"",
+    title: title ? title : "",
+    address: address ? address : "",
+    description: description ? description : "",
   });
   const [errors, setErrors] = useState<Errors>({});
 
@@ -58,11 +64,11 @@ export default function usePlaceHandler({
     });
   };
   const handleDeletePlace = async () => {
-    let respData = await sendRequest(placeID, "DELETE", null, {
+    let respData = await sendRequest('places/'+placeID, "DELETE", null, {
       Authorization: "Bearer " + token,
     });
   };
-  const handleUpdate = async (event: FormEvent) => {
+  const handleUpdate = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
     validateForm();
@@ -71,12 +77,15 @@ export default function usePlaceHandler({
 
       let respData;
       try {
-        respData = await sendRequest(placeID, "PATCH", formState, {
+        respData = await sendRequest("places/" + placeID, "PATCH", formState, {
           Authorization: "Bearer " + token,
         });
         console.log(respData);
+
       } catch (err) {
+        console.log(err);
         console.log(errors);
+
       }
 
       if (error) {
@@ -88,8 +97,6 @@ export default function usePlaceHandler({
       console.log("There are errors. Please correct them.");
     }
   };
-
-
 
   return {
     formState,

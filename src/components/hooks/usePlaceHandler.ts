@@ -18,14 +18,20 @@ interface RootState {
     loggedIn?: boolean | null;
   };
 }
-export default function usePlaceHandler(placeID:string) {
+export default function usePlaceHandler({
+  placeID,
+  setEditMode,title,address,description
+}: {
+  placeID: string;
+  setEditMode?: (value: boolean) => void;title?:string,address?:string,description?:string
+}) {
   const { isLoading, error, sendRequest } = useHttp();
-  const token = useSelector((state:RootState)=>state.user.user.token)
+  const token = useSelector((state: RootState) => state.user.user.token);
 
   const [formState, setFormState] = useState({
-    title: "",
-    address: "",
-    description: "",
+    title: title?title:"",
+    address: address?address:"",
+    description: description?description:"",
   });
   const [errors, setErrors] = useState<Errors>({});
 
@@ -33,8 +39,8 @@ export default function usePlaceHandler(placeID:string) {
     let errors: Errors = {};
     if (!formState.title) {
       errors.title = "Title is required.";
-    } 
-     if (!formState.address) {
+    }
+    if (!formState.address) {
       errors.address = "Address is invalid.";
     }
     if (!formState.description) {
@@ -50,28 +56,24 @@ export default function usePlaceHandler(placeID:string) {
       ...formState,
       [event.target.name]: event.target.value,
     });
-
   };
-const handleDeletePlace=async()=>{
-  let respData = await sendRequest(placeID, "DELETE",null,{
-    'Authorization':'Bearer '+token
-  });
-}
+  const handleDeletePlace = async () => {
+    let respData = await sendRequest(placeID, "DELETE", null, {
+      Authorization: "Bearer " + token,
+    });
+  };
   const handleUpdate = async (event: FormEvent) => {
     event.preventDefault();
 
-   
     validateForm();
     if (Object.keys(errors).length === 0) {
       console.log("Place data has no errors!");
 
       let respData;
       try {
-        respData = await sendRequest(placeID, "PATCH", formState,
-        {
-          'Authorization':'Bearer '+token
-        }
-        );
+        respData = await sendRequest(placeID, "PATCH", formState, {
+          Authorization: "Bearer " + token,
+        });
         console.log(respData);
       } catch (err) {
         console.log(errors);
@@ -82,12 +84,19 @@ const handleDeletePlace=async()=>{
         errors.back = error;
         setErrors(errors);
       }
- 
-  
     } else {
       console.log("There are errors. Please correct them.");
     }
   };
 
-  return { formState, errors, handleChange, handleUpdate, isLoading ,handleDeletePlace};
+
+
+  return {
+    formState,
+    errors,
+    handleChange,
+    handleUpdate,
+    isLoading,
+    handleDeletePlace,
+  };
 }

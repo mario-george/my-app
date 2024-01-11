@@ -7,10 +7,6 @@ import {
   Button,
   Textarea,
 } from "@nextui-org/react";
-import { Spinner } from "@nextui-org/react";
-
-import Link from "next/link";
-import { Typography } from "@material-tailwind/react";
 import { Image } from "@nextui-org/react";
 import { useState } from "react";
 import {
@@ -22,26 +18,22 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import usePlaceHandler from "@/components/hooks/usePlaceHandler";
-import EditCard from "./EditCard";
-export default function PlaceCard({
+export default function EditCard({
   title,
   address,
   description,
   image,
   id,
-  isAuthorized,
+  setEditMode,
 }: {
   title: string;
   address: string;
   description: string;
   image: string;
   id: string;
-  isAuthorized: boolean;
+  setEditMode: (value: boolean) => void;
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [editMode, setEditMode] = useState(false);
-
-  const [coverSpinner, setCoverSpinner] = useState(false);
 
   const {
     formState,
@@ -50,33 +42,12 @@ export default function PlaceCard({
     handleUpdate,
     isLoading,
     handleDeletePlace,
-  } = usePlaceHandler({ placeID: id, setEditMode });
-  const handleEditPlace = () => {
-    setCoverSpinner(true);
-    setTimeout(() => {
-      setCoverSpinner(false);
-      setEditMode(true);
-    }, 1000);  };
+  } = usePlaceHandler({ placeID: id, title, address, description });
+  const handleEditPlace = () => {};
   let imageURL =
     process.env.NEXT_PUBLIC_DEV === "true"
       ? `${process.env.NEXT_PUBLIC_URL_BACKEND}${image}`
       : image;
-  console.log(isAuthorized);
-
-  if (editMode) {
-    return (
-      <EditCard
-        key={id}
-        image={image}
-        description={description}
-        title={title}
-        address={address}
-        id={id}
-        setEditMode={setEditMode}
-      />
-    );
-  }
-
   let modal = (
     <Modal
       backdrop="opaque"
@@ -107,26 +78,23 @@ export default function PlaceCard({
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Confirmation
+              Edit Confirmation
             </ModalHeader>
             <ModalBody>
-              <p>Are you sure you want to delete the selected place</p>
-              <p>
-                This action cann't be reversed,this place will be forever lost.
-              </p>
+              <p>Are you sure you want to save the entered details.</p>
             </ModalBody>
             <ModalFooter>
               <Button variant="light" onPress={onClose}>
                 Close
               </Button>
               <Button
-                color="danger"
-                onPress={() => {
-                  handleDeletePlace();
+                color="primary"
+                onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                  handleUpdate(event);
                   onClose();
                 }}
               >
-                Delete
+                Save
               </Button>
             </ModalFooter>
           </>
@@ -134,7 +102,7 @@ export default function PlaceCard({
       </ModalContent>
     </Modal>
   );
-  let Buttons = isAuthorized ? (
+  let Buttons = (
     <>
       {" "}
       <Button
@@ -143,51 +111,29 @@ export default function PlaceCard({
         fullWidth
         color="primary"
         variant="ghost"
+        onClick={onOpen}
       >
-        View On Map{" "}
+        Submit{" "}
       </Button>
       <Button
         size="lg"
-        onClick={handleEditPlace}
         className="text-lg"
         fullWidth
         color="secondary"
         variant="ghost"
+        onClick={() => setEditMode(false)}
       >
-        Edit{" "}
+        Cancel{" "}
       </Button>{" "}
-      <Button
-        size="lg"
-        className="text-lg"
-        fullWidth
-        color="danger"
-        variant="ghost"
-        onClick={onOpen}
-      >
-        Delete{" "}
-      </Button>
     </>
-  ) : (
-    <Button
-      size="lg"
-      className="text-lg"
-      fullWidth
-      color="primary"
-      variant="ghost"
-    >
-      View On Map{" "}
-    </Button>
   );
   return (
-    <div className={`relative ${coverSpinner ? `bg-white/30 `:``}`}>
-      {coverSpinner ?   <div className="flex justify-center items-center h-full w-full absolute inset-0 bg-white opacity-75 z-50">
-      <Spinner size="lg" />
-    </div>:null}
+    <>
       {modal}
       <Card className="shadow-lg mx-auto w-full xl:w-[55%] md:w-[80%] border my-6">
         <CardHeader>
           <div className="mx-auto flex justify-center w-full">
-            <Image src={imageURL} alt="image" className="max-w-full h-auto" />
+            <Image src={imageURL} alt="image" />
           </div>
           <div className="absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-blue-300/10 " />
         </CardHeader>
@@ -197,9 +143,10 @@ export default function PlaceCard({
               <label>Title</label>
 
               <Input
-                isDisabled={true}
-                defaultValue={title}
-                className="max-w-xs z-30 !opacity-100 !w-full !md:w-auto "
+                value={formState.title}
+                name="title"
+                onChange={handleChange}
+                className="max-w-xs z-30  !w-full !md:w-auto "
                 variant="faded"
               />
             </div>
@@ -208,10 +155,11 @@ export default function PlaceCard({
               <label>Address</label>
 
               <Input
-                isDisabled={true}
-                defaultValue={address}
                 variant="faded"
-                className="max-w-xs z-30 !opacity-100 "
+                className="max-w-xs z-30  "
+                value={formState.address}
+                name="address"
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -219,12 +167,12 @@ export default function PlaceCard({
           <div className="flex flex-col  space-y-2 my-4 w-full">
             <label>Description</label>
             <Textarea
+              name="description"
               placeholder="Enter your description"
-              className="z-30 !opacity-100"
-              defaultValue={description}
-              onValueChange={(v) => {}}
-              isDisabled={true}
+              className="z-30 "
+              onChange={handleChange}
               variant="faded"
+              value={formState.description}
               fullWidth
             />
           </div>
@@ -233,6 +181,6 @@ export default function PlaceCard({
           {Buttons}
         </CardFooter>
       </Card>
-    </div>
+    </>
   );
 }

@@ -15,8 +15,6 @@ const useHttp = () => {
 
     url = process.env.NEXT_PUBLIC_API_URL + url;
 
-    console.log(url);
-    console.log(process.env);
     try {
       const response = await fetch(url, {
         method,
@@ -26,14 +24,14 @@ const useHttp = () => {
           ...headers,
         },
       });
+      console.log(response);
 
       const data = await response.json();
+      console.log(data);
       if (!response.ok) {
         console.log(data);
         throw new Error(data.message || "Something went wrong!");
       }
-
-      console.log(data);
 
       setIsLoading(false);
       return data;
@@ -47,7 +45,7 @@ const useHttp = () => {
   const sendRequestFormData = async (
     url: string,
     method: string = "POST",
-    body: FormData|null =null,
+    body: FormData | null = null,
     headers: any = {}
   ) => {
     setIsLoading(true);

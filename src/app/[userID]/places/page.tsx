@@ -5,15 +5,7 @@ import { useSelector } from "react-redux";
 import { Spinner } from "@nextui-org/react";
 
 import PlaceCard from "@/components/UI/PlaceCard";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Input,
-  Button,
-  Textarea,
-} from "@nextui-org/react";
+
 interface Props {
   params: {
     userID: string;

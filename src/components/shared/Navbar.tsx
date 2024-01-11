@@ -59,7 +59,7 @@ export default function Navbar() {
         </Typography>
       </Link>
       {user.userID && user.token && (
-        <Link href={`${user.userID}/addPlace`} className="!text-black p-1">
+        <Link href={`/${user.userID}/addPlace`} className="!text-black p-1">
           Add Place
         </Link>
       )}
@@ -89,7 +89,7 @@ export default function Navbar() {
 
             {!user.userID && !user.token && (
               <div className="flex items-center gap-x-2">
-                <Link href="login">
+                <Link href="/login">
                   <Button
                     placeholder=""
                     variant="text"

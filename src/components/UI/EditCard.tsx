@@ -48,7 +48,58 @@ export default function EditCard({
       ? `${process.env.NEXT_PUBLIC_URL_BACKEND}${image}`
       : image;
   let modal = (
-   
+    <Modal
+      backdrop="opaque"
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      motionProps={{
+        variants: {
+          enter: {
+            y: 0,
+            opacity: 1,
+            transition: {
+              duration: 0.3,
+              ease: "easeOut",
+            },
+          },
+          exit: {
+            y: -20,
+            opacity: 0,
+            transition: {
+              duration: 0.2,
+              ease: "easeIn",
+            },
+          },
+        },
+      }}
+    >
+      <ModalContent>
+        {(onClose) => (
+          <>
+            <ModalHeader className="flex flex-col gap-1">
+              Edit Confirmation
+            </ModalHeader>
+            <ModalBody>
+              <p>Are you sure you want to save the entered details.</p>
+            </ModalBody>
+            <ModalFooter>
+              <Button variant="light" onPress={onClose}>
+                Close
+              </Button>
+              <Button
+                color="primary"
+                onPress={() => {
+                    handleUpdate();
+                  onClose();
+                }}
+              >
+                Save
+              </Button>
+            </ModalFooter>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
   );
   let Buttons = (
     <> <Button

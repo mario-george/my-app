@@ -23,14 +23,15 @@ export default function EditCard({
   address,
   description,
   image,
-  id,setEditMode
+  id,
+  setEditMode,
 }: {
   title: string;
   address: string;
   description: string;
   image: string;
   id: string;
-  setEditMode:(value:boolean)=>void
+  setEditMode: (value: boolean) => void;
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -41,7 +42,7 @@ export default function EditCard({
     handleUpdate,
     isLoading,
     handleDeletePlace,
-  } = usePlaceHandler({ placeID: id,title,address,description });
+  } = usePlaceHandler({ placeID: id, title, address, description });
   const handleEditPlace = () => {};
   let imageURL =
     process.env.NEXT_PUBLIC_DEV === "true"
@@ -88,8 +89,8 @@ export default function EditCard({
               </Button>
               <Button
                 color="primary"
-                onPress={() => {
-                    handleUpdate();
+                onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                  handleUpdate(event);
                   onClose();
                 }}
               >
@@ -102,26 +103,28 @@ export default function EditCard({
     </Modal>
   );
   let Buttons = (
-    <> <Button
-    size="lg"
-    className="text-lg"
-    fullWidth
-    color="primary"
-    variant="ghost"
-    onClick={onOpen}
-  >
-    Submit{" "}
-  </Button>
+    <>
+      {" "}
+      <Button
+        size="lg"
+        className="text-lg"
+        fullWidth
+        color="primary"
+        variant="ghost"
+        onClick={onOpen}
+      >
+        Submit{" "}
+      </Button>
       <Button
         size="lg"
         className="text-lg"
         fullWidth
         color="secondary"
         variant="ghost"
-        onClick={() => setEditMode(false)}      >
+        onClick={() => setEditMode(false)}
+      >
         Cancel{" "}
       </Button>{" "}
-     
     </>
   );
   return (

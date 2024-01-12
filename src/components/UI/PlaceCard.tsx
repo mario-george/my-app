@@ -72,7 +72,8 @@ export default function PlaceCard({
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [editMode, setEditMode] = useState(false);
   const [editSuccess, setEditSuccess] = useState(false);
-
+  const [showLocation, setShowLocation] = useState(false);
+  
   const [coverSpinner, setCoverSpinner] = useState(false);
 
   const {
@@ -173,12 +174,13 @@ export default function PlaceCard({
       {" "}
       <Button
         size="lg"
-        className="text-lg"
+        className="text-lg duration-200 transition-all hover:text-black"
         fullWidth
         color="primary"
         variant="ghost"
+        onClick={()=>{setShowLocation(!showLocation)}}
       >
-        View On Map{" "}
+         {!showLocation ? `View On Map`:`Hide Map`}
       </Button>
       <Button
         size="lg"
@@ -208,13 +210,14 @@ export default function PlaceCard({
       fullWidth
       color="primary"
       variant="ghost"
+      onClick={()=>{setShowLocation(!showLocation)}}
+
     >
-      View On Map{" "}
+         {!showLocation ? `View On Map`:`Hide Map`}
     </Button>
   );
   return (
     <div className={`relative ${coverSpinner ? `bg-white/30 ` : ``}`}>
-      <MyMapComponent />
       {editSuccess && (
         <ToastComponent
           titleText="Success"
@@ -275,6 +278,8 @@ export default function PlaceCard({
         <CardFooter className="pt-3 flex flex-col space-y-3 z-30">
           {Buttons}
         </CardFooter>
+      {showLocation && <MyMapComponent />
+}
       </Card>
     </div>
   );

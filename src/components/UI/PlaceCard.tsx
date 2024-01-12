@@ -8,7 +8,6 @@ import {
   Textarea,
 } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/react";
-<ToastComponent titleText="lololo" descriptionText="lolloll"/>
 
 import Link from "next/link";
 import { Typography } from "@material-tailwind/react";

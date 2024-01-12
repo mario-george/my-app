@@ -57,7 +57,7 @@ export default function PlaceCard({
   console.log(location)
   const MyMapComponent = ({ position = location }) => {
     return (
-      <MapContainer style={{ height: "100vh", width: "100%" }}>
+      <MapContainer className="z-30 w-[100vw] h-[25vw]">
         <ChangeView center={position} zoom={13} />
         <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

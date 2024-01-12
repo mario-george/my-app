@@ -1,41 +1,37 @@
-// display list of user places (and allow edit and delete only for the authenticated user or authorized user)
 "use client";
 import { ReactElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Spinner } from "@nextui-org/react";
 
-import PlaceCard from "@/components/UI/PlaceCard";
 
-interface Props {
-  params: {
-    userID: string;
-  };
-}
+import dynamic from 'next/dynamic';
+
+const PlaceCard = dynamic(() => import('@/components/UI/PlaceCard'), { ssr: false });
 interface RootState {
   user: {
     user: {
       token?: string | null;
       userID?: string | null;
       expirationDate?: Date | null;
-      render:boolean
+      render: boolean;
     };
     loggedIn?: boolean | null;
   };
 }
 interface PlaceType {
-  location:{
-    lat:number,
-    lng:number
-  }
+  location: {
+    lat: number;
+    lng: number;
+  };
   image: string;
   description: string;
   title: string;
   address: string;
   id: string;
+  creator?:string
 }
-const Place = (props: Props) => {
+const Places = () => {
   const [places, setPlaces] = useState<Array<PlaceType> | undefined>();
-  const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
   const GlobalStateUser = useSelector((state: RootState) => state.user.user);
 
   const [content, setContent] = useState<ReactElement>(
@@ -47,10 +43,9 @@ const Place = (props: Props) => {
   useEffect(() => {
     let fetchPlaces = async () => {
       try {
-        const resp = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}places/user/${props.params.userID}`
-        );
+        const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL}places/`);
         const respData = await resp.json();
+        console.log(respData)
         if (!resp.ok) {
           throw new Error("Something went wrong!");
         }
@@ -66,20 +61,26 @@ const Place = (props: Props) => {
     };
     // Fetch data from external API
     fetchPlaces();
-    if (GlobalStateUser.userID === props.params.userID) {
-      setIsAuthorized(true);
-    }
   }, [GlobalStateUser]);
+  console.log("myid"+GlobalStateUser.userID)
 
   return (
     <>
       {places == undefined
-        ?  content 
+        ? content
         : places?.map((p: PlaceType) => {
-            const { image, description, title, id, address ,location} = p;
+            console.log(p.creator)
+            let isAuthorized = false;
+
+            if (GlobalStateUser.userID === p.creator) {
+              isAuthorized = true;
+            }
+            const { image, description, title, id, address, location } = p;
+
             return (
-              <PlaceCard
-                key={p.id}
+            <>
+                  <PlaceCard
+                key={id}
                 image={image}
                 description={description}
                 title={title}
@@ -87,11 +88,11 @@ const Place = (props: Props) => {
                 id={id}
                 isAuthorized={isAuthorized}
                 location={location}
-              />
+              /></>
             );
           })}
     </>
   );
 };
 
-export default Place;
+export default Places;

@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import useHttp from "./useHttp";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+import { render } from "../GlobalRedux/userSlice";
 
 interface Errors {
   title?: string;
@@ -14,6 +15,8 @@ interface RootState {
       token?: string | null;
       userID?: string | null;
       expirationDate?: Date | null;
+      render:boolean
+
     };
     loggedIn?: boolean | null;
   };
@@ -33,7 +36,7 @@ export default function usePlaceHandler({
 }) {
   const { isLoading, error, sendRequest } = useHttp();
   const token = useSelector((state: RootState) => state.user.user.token);
-
+const dispatch=useDispatch()
   const [formState, setFormState] = useState({
     title: title ? title : "",
     address: address ? address : "",
@@ -67,6 +70,7 @@ export default function usePlaceHandler({
     let respData = await sendRequest('places/'+placeID, "DELETE", null, {
       Authorization: "Bearer " + token,
     });
+    dispatch(render())
   };
   const handleUpdate = async (event: React.MouseEvent<HTMLButtonElement>,handleEditSubmit:()=>void) => {
     event.preventDefault();

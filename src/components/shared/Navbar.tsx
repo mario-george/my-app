@@ -59,17 +59,23 @@ export default function Navbar() {
         >
           Users
         </Typography>
+        
       </Link>
+      <Link href={`/places`}  className="!text-black p-1">
+          All Places
+        </Link>
       {user.userID && user.token && (
         <Link href={`/${user.userID}/addPlace`} className="!text-black p-1">
           Add Place
         </Link>
       )}
       {user.userID && user.token && (
-        <Link href="/places" className="!text-black p-1">
+        <Link href={`/${user.userID}/places`}  className="!text-black p-1">
           My Places
         </Link>
       )}
+
+      
     </ul>
   );
   return (

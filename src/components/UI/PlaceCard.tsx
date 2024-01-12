@@ -8,9 +8,12 @@ import {
   Textarea,
 } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/react";
+import { MapContainer, TileLayer, Popup, useMap } from "react-leaflet";
+import { CircleMarker } from 'react-leaflet/CircleMarker'
 
-import Link from "next/link";
-import { Typography } from "@material-tailwind/react";
+
+
+import "leaflet/dist/leaflet.css";
 import { Image } from "@nextui-org/react";
 import { useState } from "react";
 import {
@@ -21,10 +24,11 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@nextui-org/react";
+
 import usePlaceHandler from "@/components/hooks/usePlaceHandler";
 import EditCard from "./EditCard";
-import ToastComponent from '@/components/UI/Toast'
-
+import ToastComponent from "@/components/UI/Toast";
+import {FC} from 'react'
 export default function PlaceCard({
   title,
   address,
@@ -32,6 +36,7 @@ export default function PlaceCard({
   image,
   id,
   isAuthorized,
+  location,
 }: {
   title: string;
   address: string;
@@ -39,7 +44,31 @@ export default function PlaceCard({
   image: string;
   id: string;
   isAuthorized: boolean;
+  location: {
+    lat: number;
+    lng: number;
+  };
 }) {
+  const ChangeView: FC<{ center: {lat:number,lng:number}, zoom: number }> = ({ center, zoom }) => {
+    const map = useMap();
+    map.setView(center, zoom);
+    return null;
+  };
+  console.log(location)
+  const MyMapComponent = ({ position = location }) => {
+    return (
+      <MapContainer style={{ height: "100vh", width: "100%" }}>
+        <ChangeView center={position} zoom={13} />
+        <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+        <CircleMarker center={position}>
+          {" "}
+          <Popup>This is your location.</Popup>
+        </CircleMarker>
+      </MapContainer>
+    );
+  };
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [editMode, setEditMode] = useState(false);
   const [editSuccess, setEditSuccess] = useState(false);
@@ -59,7 +88,8 @@ export default function PlaceCard({
     setTimeout(() => {
       setCoverSpinner(false);
       setEditMode(true);
-    }, 1000);  };
+    }, 1000);
+  };
   let imageURL =
     process.env.NEXT_PUBLIC_DEV === "true"
       ? `${process.env.NEXT_PUBLIC_URL_BACKEND}${image}`
@@ -183,14 +213,19 @@ export default function PlaceCard({
     </Button>
   );
   return (
-    <div className={`relative ${coverSpinner ? `bg-white/30 `:``}`}>
-      {editSuccess && 
-<ToastComponent titleText="Success" descriptionText="Place info has been updated successfully. "/>
-      
-      }
-      {coverSpinner ?   <div className="flex justify-center items-center h-full w-full absolute inset-0 bg-white opacity-75 z-50">
-      <Spinner size="lg" />
-    </div>:null}
+    <div className={`relative ${coverSpinner ? `bg-white/30 ` : ``}`}>
+      <MyMapComponent />
+      {editSuccess && (
+        <ToastComponent
+          titleText="Success"
+          descriptionText="Place info has been updated successfully. "
+        />
+      )}
+      {coverSpinner ? (
+        <div className="flex justify-center items-center h-full w-full absolute inset-0 bg-white opacity-75 z-50">
+          <Spinner size="lg" />
+        </div>
+      ) : null}
       {modal}
       <Card className="shadow-lg mx-auto w-full xl:w-[55%] md:w-[80%] border my-6">
         <CardHeader>
@@ -241,7 +276,6 @@ export default function PlaceCard({
           {Buttons}
         </CardFooter>
       </Card>
-      
-          </div>
+    </div>
   );
 }

@@ -17,6 +17,7 @@ interface RootState {
       token?: string | null;
       userID?: string | null;
       expirationDate?: Date | null;
+      render:boolean
     };
     loggedIn?: boolean | null;
   };

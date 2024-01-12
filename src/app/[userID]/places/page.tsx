@@ -22,6 +22,10 @@ interface RootState {
   };
 }
 interface PlaceType {
+  location:{
+    lat:number,
+    lng:number
+  }
   image: string;
   description: string;
   title: string;
@@ -71,7 +75,7 @@ const Place = (props: Props) => {
       {places == undefined
         ?  content 
         : places?.map((p: PlaceType) => {
-            const { image, description, title, id, address } = p;
+            const { image, description, title, id, address ,location} = p;
             return (
               <PlaceCard
                 key={p.id}
@@ -81,6 +85,7 @@ const Place = (props: Props) => {
                 address={address}
                 id={id}
                 isAuthorized={isAuthorized}
+                location={location}
               />
             );
           })}

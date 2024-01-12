@@ -8,10 +8,12 @@ import {
   Textarea,
 } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/react";
-<ToastComponent titleText="lololo" descriptionText="lolloll"/>
+import { MapContainer, TileLayer, Popup, useMap } from "react-leaflet";
+import { CircleMarker } from 'react-leaflet/CircleMarker'
 
-import Link from "next/link";
-import { Typography } from "@material-tailwind/react";
+
+
+import "leaflet/dist/leaflet.css";
 import { Image } from "@nextui-org/react";
 import { useState } from "react";
 import {
@@ -22,10 +24,11 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@nextui-org/react";
+
 import usePlaceHandler from "@/components/hooks/usePlaceHandler";
 import EditCard from "./EditCard";
-import ToastComponent from '@/components/UI/Toast'
-
+import ToastComponent from "@/components/UI/Toast";
+import {FC} from 'react'
 export default function PlaceCard({
   title,
   address,
@@ -33,6 +36,7 @@ export default function PlaceCard({
   image,
   id,
   isAuthorized,
+  location,
 }: {
   title: string;
   address: string;
@@ -40,11 +44,36 @@ export default function PlaceCard({
   image: string;
   id: string;
   isAuthorized: boolean;
+  location: {
+    lat: number;
+    lng: number;
+  };
 }) {
+  const ChangeView: FC<{ center: {lat:number,lng:number}, zoom: number }> = ({ center, zoom }) => {
+    const map = useMap();
+    map.setView(center, zoom);
+    return null;
+  };
+  console.log(location)
+  const MyMapComponent = ({ position = location }) => {
+    return (
+      <MapContainer className="z-30 w-[100vw] h-[25vw]">
+        <ChangeView center={position} zoom={13} />
+        <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+        <CircleMarker center={position}>
+          {" "}
+          <Popup>This is your location.</Popup>
+        </CircleMarker>
+      </MapContainer>
+    );
+  };
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [editMode, setEditMode] = useState(false);
   const [editSuccess, setEditSuccess] = useState(false);
-
+  const [showLocation, setShowLocation] = useState(false);
+  
   const [coverSpinner, setCoverSpinner] = useState(false);
 
   const {
@@ -60,7 +89,8 @@ export default function PlaceCard({
     setTimeout(() => {
       setCoverSpinner(false);
       setEditMode(true);
-    }, 1000);  };
+    }, 1000);
+  };
   let imageURL =
     process.env.NEXT_PUBLIC_DEV === "true"
       ? `${process.env.NEXT_PUBLIC_URL_BACKEND}${image}`
@@ -144,12 +174,13 @@ export default function PlaceCard({
       {" "}
       <Button
         size="lg"
-        className="text-lg"
+        className="text-lg duration-200 transition-all hover:text-black"
         fullWidth
         color="primary"
         variant="ghost"
+        onClick={()=>{setShowLocation(!showLocation)}}
       >
-        View On Map{" "}
+         {!showLocation ? `View On Map`:`Hide Map`}
       </Button>
       <Button
         size="lg"
@@ -179,19 +210,25 @@ export default function PlaceCard({
       fullWidth
       color="primary"
       variant="ghost"
+      onClick={()=>{setShowLocation(!showLocation)}}
+
     >
-      View On Map{" "}
+         {!showLocation ? `View On Map`:`Hide Map`}
     </Button>
   );
   return (
-    <div className={`relative ${coverSpinner ? `bg-white/30 `:``}`}>
-      {editSuccess && 
-<ToastComponent titleText="Success" descriptionText="Place info has been updated successfully. "/>
-      
-      }
-      {coverSpinner ?   <div className="flex justify-center items-center h-full w-full absolute inset-0 bg-white opacity-75 z-50">
-      <Spinner size="lg" />
-    </div>:null}
+    <div className={`relative ${coverSpinner ? `bg-white/30 ` : ``}`}>
+      {editSuccess && (
+        <ToastComponent
+          titleText="Success"
+          descriptionText="Place info has been updated successfully. "
+        />
+      )}
+      {coverSpinner ? (
+        <div className="flex justify-center items-center h-full w-full absolute inset-0 bg-white opacity-75 z-50">
+          <Spinner size="lg" />
+        </div>
+      ) : null}
       {modal}
       <Card className="shadow-lg mx-auto w-full xl:w-[55%] md:w-[80%] border my-6">
         <CardHeader>
@@ -241,8 +278,9 @@ export default function PlaceCard({
         <CardFooter className="pt-3 flex flex-col space-y-3 z-30">
           {Buttons}
         </CardFooter>
+      {showLocation && <MyMapComponent />
+}
       </Card>
-      
-          </div>
+    </div>
   );
 }

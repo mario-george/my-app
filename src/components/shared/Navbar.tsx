@@ -5,7 +5,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { autoLogin, logout } from "@/components/GlobalRedux/userSlice";
 import { useSelector } from "react-redux";
-
+import { RootState } from "../types/userTypes";
 import {
   Navbar as NavbarEl,
   Collapse,
@@ -14,18 +14,7 @@ import {
   IconButton,
   Card,
 } from "./material-tailwind";
-interface RootState {
-  user: {
-    user: {
-      token?: string | null;
-      userID?: string | null;
-      expirationDate?: Date | null;
-      render:boolean
 
-    };
-    loggedIn?: boolean | null;
-  };
-}
 export default function Navbar() {
   const [openNav, setOpenNav] = React.useState(false);
   const dispatch = useDispatch();

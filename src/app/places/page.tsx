@@ -5,31 +5,10 @@ import { Spinner } from "@nextui-org/react";
 
 
 import dynamic from 'next/dynamic';
-
+import { RootState } from "@/components/types/userTypes";
+import { PlaceType } from "@/components/types/placesTypes";
 const PlaceCard = dynamic(() => import('@/components/UI/PlaceCard'), { ssr: false });
-interface RootState {
-  user: {
-    user: {
-      token?: string | null;
-      userID?: string | null;
-      expirationDate?: Date | null;
-      render: boolean;
-    };
-    loggedIn?: boolean | null;
-  };
-}
-interface PlaceType {
-  location: {
-    lat: number;
-    lng: number;
-  };
-  image: string;
-  description: string;
-  title: string;
-  address: string;
-  id: string;
-  creator?:string
-}
+
 const Places = () => {
   const [places, setPlaces] = useState<Array<PlaceType> | undefined>();
   const GlobalStateUser = useSelector((state: RootState) => state.user.user);

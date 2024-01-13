@@ -5,34 +5,10 @@ import { useSelector } from "react-redux";
 import { Spinner } from "@nextui-org/react";
 
 import PlaceCard from "@/components/UI/PlaceCard";
+import { Props, RootState } from "@/components/types/userTypes";
+import { PlaceType } from "@/components/types/placesTypes";
 
-interface Props {
-  params: {
-    userID: string;
-  };
-}
-interface RootState {
-  user: {
-    user: {
-      token?: string | null;
-      userID?: string | null;
-      expirationDate?: Date | null;
-      render:boolean
-    };
-    loggedIn?: boolean | null;
-  };
-}
-interface PlaceType {
-  location:{
-    lat:number,
-    lng:number
-  }
-  image: string;
-  description: string;
-  title: string;
-  address: string;
-  id: string;
-}
+
 const Place = (props: Props) => {
   const [places, setPlaces] = useState<Array<PlaceType> | undefined>();
   const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
@@ -74,9 +50,9 @@ const Place = (props: Props) => {
   return (
     <>
       {places == undefined
-        ?  content 
+        ? content
         : places?.map((p: PlaceType) => {
-            const { image, description, title, id, address ,location} = p;
+            const { image, description, title, id, address, location } = p;
             return (
               <PlaceCard
                 key={p.id}

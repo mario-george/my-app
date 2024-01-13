@@ -2,25 +2,9 @@ import { FormEvent, useState } from "react";
 import useHttp from "./useHttp";
 import { useSelector,useDispatch } from "react-redux";
 import { render } from "../GlobalRedux/userSlice";
+import { RootState } from "../types/userTypes";
+import { PlaceErrors } from "../types/formTypes";
 
-interface Errors {
-  title?: string;
-  description?: string;
-  address?: string;
-  back?: string;
-}
-interface RootState {
-  user: {
-    user: {
-      token?: string | null;
-      userID?: string | null;
-      expirationDate?: Date | null;
-      render:boolean
-
-    };
-    loggedIn?: boolean | null;
-  };
-}
 export default function usePlaceHandler({
   placeID,
   setEditMode,
@@ -42,10 +26,10 @@ const dispatch=useDispatch()
     address: address ? address : "",
     description: description ? description : "",
   });
-  const [errors, setErrors] = useState<Errors>({});
+  const [errors, setErrors] = useState<PlaceErrors>({});
 
   const validateForm = () => {
-    let errors: Errors = {};
+    let errors: PlaceErrors = {};
     if (!formState.title) {
       errors.title = "Title is required.";
     }

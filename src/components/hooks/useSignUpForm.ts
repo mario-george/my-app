@@ -4,11 +4,8 @@ import useHttp from "./useHttp";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { login } from "@/components/GlobalRedux/userSlice";
-interface Errors {
-  name?: string;
-  email?: string;
-  password?: string;
-}
+
+import { SignUpErrors } from "../types/formTypes";
 
 export default function useSignUpForm() {
   const { isLoading, error, sendRequestFormData } = useHttp();
@@ -19,9 +16,9 @@ export default function useSignUpForm() {
     email: "",
     password: "",
   });
-  const [errors, setErrors] = useState<Errors>({});
+  const [errors, setErrors] = useState<SignUpErrors>({});
   const validateForm = () => {
-    let errors: Errors = {};
+    let errors: SignUpErrors = {};
     if (!formState.name) {
       errors.name = "Name is required.";
     }

@@ -1,21 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-interface InitialState {
-  user: {
-    token?: string | null;
-    userID?: string | null;
-    expirationDate?: Date | null | string;
-    render:boolean
-  };
-  loggedIn?: boolean | null;
-}
+import { InitialState } from "@/components/types/userTypes";
 
 const initialState: InitialState = {
   user: {
     token: null,
     userID: null,
     expirationDate: null,
-    render:false
+    render: false,
   },
   loggedIn: false,
 };
@@ -69,12 +60,12 @@ const userSlice = createSlice({
         // stored as ISO String in redux global state
       }
     },
-    render:(state)=>{
-      state.user.render=!state.user.render
-    }
+    render: (state) => {
+      state.user.render = !state.user.render;
+    },
   },
 });
 
-export const { login, logout, autoLogin,render } = userSlice.actions;
+export const { login, logout, autoLogin, render } = userSlice.actions;
 
 export default userSlice.reducer;

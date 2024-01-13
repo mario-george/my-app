@@ -1,4 +1,4 @@
-interface PlaceType {
+export interface PlaceType {
     location:{
       lat:number,
       lng:number
@@ -8,4 +8,5 @@ interface PlaceType {
     title: string;
     address: string;
     id: string;
+    creator?:string
   }

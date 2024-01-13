@@ -2,12 +2,7 @@ import { FormEvent, useState } from "react";
 import useHttp from "./useHttp";
 import { useDispatch } from "react-redux";
 import { login } from "@/components/GlobalRedux/userSlice";import {useRouter} from 'next/navigation'
-
-interface Errors {
-  email?: string;
-  password?: string;
-  back?: string;
-}
+import { SignInErrors } from "../types/formTypes";
 
 export default function useSignInForm() {
   const { isLoading, error, sendRequest } = useHttp();
@@ -18,10 +13,10 @@ const router =useRouter()
     password: "",
     back: "",
   });
-  const [errors, setErrors] = useState<Errors>({});
+  const [errors, setErrors] = useState<SignInErrors>({});
 
   const validateForm = () => {
-    let errors: Errors = {};
+    let errors: SignInErrors = {};
     if (!formState.email) {
       errors.email = "Email is required.";
     } else if (!/\S+@\S+\.\S+/.test(formState.email)) {

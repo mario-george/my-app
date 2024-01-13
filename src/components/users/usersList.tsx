@@ -5,12 +5,9 @@ import { User as UserElement } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/react";
 
 import { useState, useEffect } from "react";
-interface User {
-  id: string;
-  places: Array<any>;
-  name: string;
-  image: string;
-}
+import {User} from '@/components/types/userTypes'
+
+
 export default function Users() {
   const [users, setUsers] = useState([]);
 

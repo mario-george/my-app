@@ -3,24 +3,9 @@ import { FormEvent, useState } from "react";
 import useHttp from "./useHttp";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
-interface Errors {
-  title?: string;
-  address?: string;
-  location?: string;
-  description?: string;
-}
-interface RootState {
-  user: {
-    user: {
-      token?: string | null;
-      userID?: string | null;
-      expirationDate?: Date | null;
-      render:boolean
+import { RootState } from "../types/userTypes";
+import { AddPlaceErrors } from "../types/formTypes";
 
-    };
-    loggedIn?: boolean | null;
-  };
-}
 export default function useAddPlaceHook({ userID }:{userID:string}) {
   const { isLoading, error, sendRequestFormData } = useHttp();
   const token = useSelector((state:RootState)=>state.user.user.token)
@@ -30,9 +15,9 @@ const router= useRouter()
     address: "",
     description: "",
   });
-  const [errors, setErrors] = useState<Errors>({});
+  const [errors, setErrors] = useState<AddPlaceErrors>({});
   const validateForm = () => {
-    let errors: Errors = {};
+    let errors: AddPlaceErrors = {};
     if (!formState.title) {
       errors.title = "Title is required.";
     }

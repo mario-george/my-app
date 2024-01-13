@@ -11,11 +11,7 @@ import { useState } from "react";
 import { RiImageAddFill } from "react-icons/ri";
 import { IoAddSharp } from "react-icons/io5";
 import useAddPlaceHook from "@/components/hooks/useAddPlaceHook";
-interface Props {
-  params: {
-    userID: string;
-  };
-}
+import {Props}from '@/components/types/userTypes'
 
 const AddPlacePage = (props: Props) => {
   const [image, setImage] = useState("/images/noImage.jpg"); // Set the initial image to the default image of the place

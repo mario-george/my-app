@@ -11,14 +11,14 @@ import { useState } from "react";
 import { RiImageAddFill } from "react-icons/ri";
 import { IoAddSharp } from "react-icons/io5";
 import useAddPlaceHook from "@/components/hooks/useAddPlaceHook";
-import {Props}from '@/components/types/userTypes'
+import { Props } from "@/components/types/userTypes";
 
 const AddPlacePage = (props: Props) => {
   const [image, setImage] = useState("/images/noImage.jpg"); // Set the initial image to the default image of the place
   const { userID } = props.params;
 
   const { formState, errors, handleChange, handleSubmit, isLoading } =
-    useAddPlaceHook({userID});
+    useAddPlaceHook({ userID });
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Handle the image file upload
@@ -42,16 +42,19 @@ const AddPlacePage = (props: Props) => {
   return (
     <Card className="mx-[4rem] my-[1rem]">
       <CardHeader className="px-4 pt-12 pb-6 flex-col items-start">
-        <h1 className="flex font-bold pl-[1rem] text-xl">
-          <span>
-          Add a Place
-          
-          
+        <h1 className="flex font-bold pl-[1rem] text-xl text-white rounded-lg bg-[#B1A296] px-3 w-full py-6">
+          <span className="flex items-center space-x-3  ">
+            <span>
+
+            Add a Place
+            </span>
+            <span>
+
             <IoAddSharp />
-                   </span>     
-                   
-                     <span>
+            </span>
           </span>
+
+          <span></span>
         </h1>
       </CardHeader>
 
@@ -72,7 +75,6 @@ const AddPlacePage = (props: Props) => {
             onChange={handleChange}
             required
           />
-  
           <Spacer y={1} />
           <Input
             label="Description"
@@ -89,7 +91,7 @@ const AddPlacePage = (props: Props) => {
             style={{ display: "none" }}
             id="place-image"
           />
-          <div className=" ">
+          <div className="flex flex-col justify-center ">
             <img
               src={image}
               className="max-w-[400px] max-h-[400px]"

@@ -41,8 +41,9 @@ export default function LoginPage() {
               crossOrigin=""
               size="lg"
               placeholder="name@mail.com"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
+              className={` ${
+                errors.email ? "!border-red-500 !border-t-red-500 focus:!border-t-red-500"  : "!border-t-blue-gray-200 focus:!border-t-gray-900"
+              }`}              labelProps={{
                 className: "before:content-none after:content-none",
               }}
             />
@@ -67,8 +68,9 @@ export default function LoginPage() {
               type="password"
               size="lg"
               placeholder="********"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
+              className={` ${
+                errors.password ? "!border-red-500 !border-t-red-500 focus:!border-t-red-500"  : "!border-t-blue-gray-200 focus:!border-t-gray-900"
+              }`}              labelProps={{
                 className: "before:content-none after:content-none",
               }}
             />{" "}

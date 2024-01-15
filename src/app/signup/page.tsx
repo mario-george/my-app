@@ -15,10 +15,11 @@ import { useState } from "react";
 export default function SignUpPage() {
   const [image, setImage] = useState("/images/noImage.jpg"); // Set the initial image to the default image
 
-  const { formState, errors, handleChange, handleSubmit, isLoading } =
+  const { formState, errors, handleChange, handleSubmit, isLoading ,setErrors} =
     useSignUpForm();
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Handle the image file upload
+    setErrors({...errors,image:''})
     let file;
     if (event.target.files && event.target.files.length === 1) {
       file = event.target.files[0];
@@ -66,8 +67,8 @@ export default function SignUpPage() {
               onChange={handleChange}
               size="lg"
               placeholder="name"
-              className={`!border-t-blue-gray-200 focus:!border-t-gray-900 ${
-                errors.name ? "!border-red-500 !border-t-red-500" : ""
+              className={` ${
+                errors.name ? "!border-red-500  " : "!border-t-blue-gray-200 focus:!border-t-gray-900"
               }`}
               labelProps={{
                 className: "before:content-none after:content-none",
@@ -93,8 +94,8 @@ export default function SignUpPage() {
               crossOrigin=""
               size="lg"
               placeholder="name@mail.com"
-              className={`!border-t-blue-gray-200 focus:!border-t-gray-900 ${
-                errors.email ? "!border-red-500 !border-t-red-500" : ""
+              className={` ${
+                errors.email ? "!border-red-500 !border-t-red-500 focus:!border-t-red-500"  : "!border-t-blue-gray-200 focus:!border-t-gray-900"
               }`}
               labelProps={{
                 className: "before:content-none after:content-none",
@@ -121,8 +122,8 @@ export default function SignUpPage() {
               onChange={handleChange}
               size="lg"
               placeholder="******"
-              className={`!border-t-blue-gray-200 focus:!border-t-gray-900 ${
-                errors.password ? "!border-red-500 !border-t-red-500" : ""
+              className={`${
+                errors.password ? "!border-red-500 !border-t-red-500" : "!border-t-blue-gray-200 focus:!border-t-gray-900 "
               }`}
               labelProps={{
                 className: "before:content-none after:content-none",
@@ -140,7 +141,13 @@ export default function SignUpPage() {
               style={{ display: "none" }}
               id="image-upload"
             />
-            <img src={image} alt="Uploaded" />
+            <img src={image} alt="Uploaded" 
+       onClick={() => {
+        const uploadButton = document.getElementById("image-upload");
+        if (uploadButton) {
+          uploadButton.click();
+        }
+      }}              />
             <Button
               color="success"
               type="button"
@@ -153,6 +160,11 @@ export default function SignUpPage() {
             >
               Upload Image
             </Button>
+            {errors.image && (
+              <Typography className="text-red-500 text-center" placeholder="">
+                {errors.image}
+              </Typography>
+            )}
           </div>
           <Checkbox
             crossOrigin=""

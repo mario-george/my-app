@@ -22,11 +22,11 @@ const router= useRouter()
       errors.title = "Title is required.";
     }
     if (!formState.address) {
-      errors.title = "address is required.";
+      errors.address = "address is required.";
     }
  
     if (!formState.description) {
-      errors.title = "description is required.";
+      errors.description = "description is required.";
     }
     setErrors(errors);
   };

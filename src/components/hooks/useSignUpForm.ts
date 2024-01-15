@@ -15,6 +15,7 @@ export default function useSignUpForm() {
     name: "",
     email: "",
     password: "",
+    image: "",
   });
   const [errors, setErrors] = useState<SignUpErrors>({});
   const validateForm = () => {
@@ -32,13 +33,27 @@ export default function useSignUpForm() {
     } else if (formState.password.length < 6) {
       errors.password = "Password must be at least 6 characters.";
     }
+    const fileInput = document.getElementById(
+      "image-upload"
+    ) as HTMLInputElement;
+    if (!fileInput || !fileInput.files || !(fileInput.files.length > 0)) {
+      errors.image = "Image is required.";
+    }
+
     setErrors(errors);
+    return fileInput;
   };
 
   // if you used event.target.name it is treated as a string “event.target.name”, not the value it holds (like ‘name’, ‘email’, or ‘password’). So, instead of updating the corresponding field in the formState, it would attempt to update a field literally named “event.target.name”, which is not what you want.
   // The square brackets [event.target.name] tell JavaScript to interpret the expression inside as a variable, allowing you to use dynamic keys in your object.
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const fieldName = event.target.name as "name" | "password" | "email";
+    if (errors[fieldName] !== "") {
+      setErrors((prevErrors) => {
+        return { ...prevErrors, [event.target.name]: "" };
+      });
+    }
     setFormState({
       ...formState,
       [event.target.name]: event.target.value,
@@ -49,7 +64,7 @@ export default function useSignUpForm() {
     event.preventDefault();
     console.log(errors);
     console.log(formState);
-    validateForm();
+    let fileInput = validateForm() as HTMLInputElement;
     if (Object.keys(errors).length === 0) {
       console.log("Form validation is successful!");
 
@@ -57,22 +72,22 @@ export default function useSignUpForm() {
       const formData = new FormData();
 
       // Append the file to the FormData object
-      const fileInput = document.getElementById(
-        "image-upload"
-      ) as HTMLInputElement;
-      if (fileInput && fileInput.files && fileInput.files.length > 0) {
+      if (fileInput&&fileInput.files) {
         formData.append("image", fileInput.files[0]);
       }
-
       // Append the form state to the FormData object
       formData.append("name", formState.name);
       formData.append("email", formState.email);
       formData.append("password", formState.password);
 
-
-
       // Send the FormData object in the body of the signup request
-      const data = await sendRequestFormData("users/signup", "POST", formData);
+
+      let data;
+      try {
+        data = await sendRequestFormData("users/signup", "POST", formData);
+      } catch (err) {
+        console.log(err);
+      }
       const { token, userId } = data;
       console.log(data);
       console.log(data);
@@ -91,5 +106,12 @@ export default function useSignUpForm() {
     }
   };
 
-  return { formState, errors, handleChange, handleSubmit, isLoading };
+  return {
+    formState,
+    errors,
+    handleChange,
+    handleSubmit,
+    isLoading,
+    setErrors,
+  };
 }

@@ -1,13 +1,14 @@
 import { FormEvent, useState } from "react";
 import useHttp from "./useHttp";
 import { useDispatch } from "react-redux";
-import { login } from "@/components/GlobalRedux/userSlice";import {useRouter} from 'next/navigation'
+import { login } from "@/components/GlobalRedux/userSlice";
+import { useRouter } from "next/navigation";
 import { SignInErrors } from "../types/formTypes";
 
 export default function useSignInForm() {
-  const { isLoading, error, sendRequest ,setIsLoading} = useHttp();
+  const { isLoading, error, sendRequest, setIsLoading } = useHttp();
   const dispatch = useDispatch();
-const router =useRouter()
+  const router = useRouter();
   const [formState, setFormState] = useState({
     email: "",
     password: "",
@@ -28,10 +29,16 @@ const router =useRouter()
       errors.password = "Password must be at least 6 characters.";
     }
     setErrors(errors);
-    return
+    return errors;
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const nameOfField = event.target.name as "email" | "password";
+    if (errors[nameOfField] !== "") {
+      setErrors(prevErrors=>{
+        return{     ...prevErrors,[event.target.name]:''}
+      })
+    }
     setFormState({
       ...formState,
       [event.target.name]: event.target.value,
@@ -39,12 +46,11 @@ const router =useRouter()
   };
 
   const handleSubmit = async (event: FormEvent) => {
-    setIsLoading(true)
+    setIsLoading(true);
     event.preventDefault();
 
-    console.log(errors);
     console.log(formState);
-    validateForm();
+    let errors = validateForm();
     if (Object.keys(errors).length === 0) {
       console.log("Form submitted successfully!");
 
@@ -70,11 +76,12 @@ const router =useRouter()
         console.log(respData);
         console.log(respData);
         dispatch(login({ token, userID: userId }));
-        router.push('/')
+        router.push("/");
       }
     } else {
       console.log("Form has errors. Please correct them.");
     }
+    setIsLoading(false);
   };
 
   return { formState, errors, handleChange, handleSubmit, isLoading };

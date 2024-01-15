@@ -5,7 +5,7 @@ import { login } from "@/components/GlobalRedux/userSlice";import {useRouter} fr
 import { SignInErrors } from "../types/formTypes";
 
 export default function useSignInForm() {
-  const { isLoading, error, sendRequest } = useHttp();
+  const { isLoading, error, sendRequest ,setIsLoading} = useHttp();
   const dispatch = useDispatch();
 const router =useRouter()
   const [formState, setFormState] = useState({
@@ -28,6 +28,7 @@ const router =useRouter()
       errors.password = "Password must be at least 6 characters.";
     }
     setErrors(errors);
+    return
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,6 +39,7 @@ const router =useRouter()
   };
 
   const handleSubmit = async (event: FormEvent) => {
+    setIsLoading(true)
     event.preventDefault();
 
     console.log(errors);

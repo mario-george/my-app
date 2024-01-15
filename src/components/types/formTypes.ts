@@ -2,6 +2,7 @@ export interface SignUpErrors {
   name?: string;
   email?: string;
   password?: string;
+  image?:string
 }
 export interface SignInErrors {
   email?: string;

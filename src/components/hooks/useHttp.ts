@@ -83,7 +83,7 @@ const useHttp = () => {
     isLoading,
     error,
     sendRequest,
-    sendRequestFormData,
+    sendRequestFormData,setIsLoading
   };
 };
 

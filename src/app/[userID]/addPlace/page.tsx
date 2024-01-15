@@ -12,6 +12,9 @@ import { RiImageAddFill } from "react-icons/ri";
 import { IoAddSharp } from "react-icons/io5";
 import useAddPlaceHook from "@/components/hooks/useAddPlaceHook";
 import { Props } from "@/components/types/userTypes";
+import { Typography } from "@/components/shared/material-tailwind";
+import {Divider} from "@nextui-org/react";
+import {Textarea} from "@nextui-org/react";
 
 const AddPlacePage = (props: Props) => {
   const [image, setImage] = useState("/images/noImage.jpg"); // Set the initial image to the default image of the place
@@ -40,26 +43,24 @@ const AddPlacePage = (props: Props) => {
     reader.readAsDataURL(file);
   };
   return (
-    <Card className="mx-[4rem] my-[1rem]">
+    <Card className="mx-auto my-[1rem] container max-w-3xl">
       <CardHeader className="px-4 pt-12 pb-6 flex-col items-start">
         <h1 className="flex font-bold pl-[1rem] text-xl text-white rounded-lg bg-[#B1A296] px-3 w-full py-6">
           <span className="flex items-center space-x-3  ">
+            <span>Add a Place</span>
             <span>
-
-            Add a Place
-            </span>
-            <span>
-
-            <IoAddSharp />
+              <IoAddSharp />
             </span>
           </span>
 
-          <span></span>
         </h1>
       </CardHeader>
 
       <CardBody>
         <form onSubmit={handleSubmit}>
+          <div className="flex flex-col md:flex-row space-x-4">
+            <div className="flex flex-col space-y-3">
+
           <Input
             label="Title"
             name="title"
@@ -67,7 +68,15 @@ const AddPlacePage = (props: Props) => {
             onChange={handleChange}
             required
           />
-          <Spacer y={1} />
+          {errors.title && (
+            <Typography className="text-red-500" placeholder="">
+              {errors.title}
+            </Typography>
+          )}{" "}
+            </div>
+
+            <div className="flex flex-col space-y-3">
+              
           <Input
             label="Address"
             name="address"
@@ -75,7 +84,19 @@ const AddPlacePage = (props: Props) => {
             onChange={handleChange}
             required
           />
+          {errors.address && (
+            <Typography className="text-red-500" placeholder="">
+              {errors.address}
+            </Typography>
+          )}
+              </div>
+          </div>
           <Spacer y={1} />
+          <Spacer y={1} />
+          
+          
+          
+          {" "}
           <Input
             label="Description"
             name="description"
@@ -83,7 +104,14 @@ const AddPlacePage = (props: Props) => {
             onChange={handleChange}
             required
           />
-          <Spacer y={1} />
+          <Spacer y={1} />{" "}
+          {errors.description && (
+            <Typography className="text-red-500" placeholder="">
+              {errors.description}
+            </Typography>
+          )}{" "}
+      <Divider className="my-4" />
+
           <input
             type="file"
             accept=".jpg,.png,.jpeg"
@@ -91,10 +119,12 @@ const AddPlacePage = (props: Props) => {
             style={{ display: "none" }}
             id="place-image"
           />
+          <Spacer y={1} />{" "}
+
           <div className="flex flex-col justify-center ">
             <img
               src={image}
-              className="max-w-[400px] max-h-[400px]"
+              className="max-w-[400px] max-h-[400px] mx-auto rounded-lg shadow-xl "
               alt="Place Image"
               onClick={() => {
                 const uploadButton = document.getElementById("place-image");
@@ -103,6 +133,7 @@ const AddPlacePage = (props: Props) => {
                 }
               }}
             />
+
             <Button
               variant="ghost"
               color="secondary"
@@ -119,8 +150,8 @@ const AddPlacePage = (props: Props) => {
               <RiImageAddFill className="text-xl" />
             </Button>
           </div>
-          <Spacer y={2} />
-          <Button color="primary" type="submit" isLoading={isLoading} fullWidth>
+          <Spacer y={1} />
+          <Button color="secondary" type="submit" isLoading={isLoading} fullWidth>
             Submit
           </Button>{" "}
         </form>

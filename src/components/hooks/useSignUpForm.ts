@@ -41,7 +41,7 @@ export default function useSignUpForm() {
     }
 
     setErrors(errors);
-    return fileInput;
+    return {fileInput,errors};
   };
 
   // if you used event.target.name it is treated as a string “event.target.name”, not the value it holds (like ‘name’, ‘email’, or ‘password’). So, instead of updating the corresponding field in the formState, it would attempt to update a field literally named “event.target.name”, which is not what you want.
@@ -63,9 +63,8 @@ export default function useSignUpForm() {
   const handleSubmit = async (event: FormEvent) => {
     setIsLoading(true)
     event.preventDefault();
-    console.log(errors);
     console.log(formState);
-    let fileInput = validateForm() as HTMLInputElement;
+    let {fileInput,errors} = validateForm() as {fileInput:HTMLInputElement,errors:SignUpErrors};
     if (Object.keys(errors).length === 0) {
       console.log("Form validation is successful!");
 
@@ -104,6 +103,7 @@ export default function useSignUpForm() {
        */
     } else {
       console.log("Form has errors. Please correct them.");
+      setIsLoading(false)
     }
   };
 

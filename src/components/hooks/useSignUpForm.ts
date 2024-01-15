@@ -8,7 +8,7 @@ import { login } from "@/components/GlobalRedux/userSlice";
 import { SignUpErrors } from "../types/formTypes";
 
 export default function useSignUpForm() {
-  const { isLoading, error, sendRequestFormData } = useHttp();
+  const { isLoading, error, sendRequestFormData ,setIsLoading} = useHttp();
   const dispatch = useDispatch();
   const router = useRouter();
   const [formState, setFormState] = useState({
@@ -61,6 +61,7 @@ export default function useSignUpForm() {
   };
 
   const handleSubmit = async (event: FormEvent) => {
+    setIsLoading(true)
     event.preventDefault();
     console.log(errors);
     console.log(formState);

@@ -36,7 +36,7 @@ export default function PlaceCard({
   image,
   id,
   isAuthorized,
-  location,
+  location,imageFileName
 }: {
   title: string;
   address: string;
@@ -48,6 +48,7 @@ export default function PlaceCard({
     lat: number;
     lng: number;
   };
+  imageFileName:string
 }) {
   const ChangeView: FC<{ center: {lat:number,lng:number}, zoom: number }> = ({ center, zoom }) => {
     const map = useMap();
@@ -91,10 +92,16 @@ export default function PlaceCard({
       setEditMode(true);
     }, 1000);
   };
-  let imageURL =
-    process.env.NEXT_PUBLIC_DEV === "true"
-      ? `${process.env.NEXT_PUBLIC_URL_BACKEND}${image}`
-      : image;
+  let imageURL 
+  if(process.env.NEXT_PUBLIC_AWS_STORAGE === "true"){
+    imageURL =
+   process.env.NEXT_PUBLIC_DEV === "true"
+     ? `${process.env.NEXT_PUBLIC_URL_BACKEND}${image}`
+     : image;
+ }else{
+   imageURL = `${process.env.NEXT_PUBLIC_API_URL+"image/"}${imageFileName}`
+ }
+
   console.log(isAuthorized);
 
   if (editMode) {

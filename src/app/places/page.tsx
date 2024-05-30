@@ -75,19 +75,22 @@ const Places = () => {
             if (GlobalStateUser.userID === p.creator) {
               isAuthorized = true;
             }
-            const { image, description, title, id, address, location } = p;
-
+            const { image, description, title, id, address, location ,imageFileName} = p;
+let PlaceCardProps={
+  key:id,
+  image,
+  description,
+  title,
+  address,
+  id,
+  isAuthorized,
+  location,
+  imageFileName
+}
             return (
             <>
                   <PlaceCard
-                key={id}
-                image={image}
-                description={description}
-                title={title}
-                address={address}
-                id={id}
-                isAuthorized={isAuthorized}
-                location={location}
+               {...PlaceCardProps}
               /></>
             );
           })}

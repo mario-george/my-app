@@ -32,6 +32,7 @@ interface PlaceType {
   title: string;
   address: string;
   id: string;
+  imageFileName:string
 }
 const Place = (props: Props) => {
   const [places, setPlaces] = useState<Array<PlaceType> | undefined>();
@@ -76,17 +77,21 @@ const Place = (props: Props) => {
       {places == undefined
         ?  content 
         : places?.map((p: PlaceType) => {
-            const { image, description, title, id, address ,location} = p;
+            const { image, description, title, id, address ,location,imageFileName} = p;
+            let PlaceCardProps={
+              key: p.id,
+              image: image,
+              description: description,
+              title: title,
+              address: address,
+              id: id,
+              isAuthorized: isAuthorized,
+              location: location,
+              imageFileName
+            }
             return (
               <PlaceCard
-                key={p.id}
-                image={image}
-                description={description}
-                title={title}
-                address={address}
-                id={id}
-                isAuthorized={isAuthorized}
-                location={location}
+                {...PlaceCardProps}
               />
             );
           })}

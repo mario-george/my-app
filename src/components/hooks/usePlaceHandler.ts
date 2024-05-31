@@ -2,6 +2,7 @@ import { FormEvent, useState } from "react";
 import useHttp from "./useHttp";
 import { useSelector,useDispatch } from "react-redux";
 import { render } from "../GlobalRedux/userSlice";
+import useToastHandler from "./useToastHandler";
 
 interface Errors {
   title?: string;
@@ -35,6 +36,8 @@ export default function usePlaceHandler({
   description?: string;
 }) {
   const { isLoading, error, sendRequest } = useHttp();
+  const {toastCallBack} = useToastHandler();
+
   const token = useSelector((state: RootState) => state.user.user.token);
 const dispatch=useDispatch()
   const [formState, setFormState] = useState({
@@ -83,7 +86,7 @@ const dispatch=useDispatch()
       try {
         respData = await sendRequest("places/" + placeID, "PATCH", formState, {
           Authorization: "Bearer " + token,
-        });
+        },toastCallBack);
         console.log(respData);
 
         handleEditSubmit()
@@ -92,6 +95,8 @@ const dispatch=useDispatch()
         console.log(err);
         console.log(errors);
 
+      }finally{
+        setErrors({})
       }
 
       if (error) {

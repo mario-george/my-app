@@ -8,7 +8,8 @@ const useHttp = () => {
     url: string,
     method: string = "GET",
     body: any = null,
-    headers: any = {}
+    headers: any = {},
+    toastCallBack: (message: string) => void = () => {}
   ) => {
     setIsLoading(true);
     setError(null);
@@ -24,21 +25,22 @@ const useHttp = () => {
           ...headers,
         },
       });
-      console.log(response);
 
       const data = await response.json();
-      console.log(data);
       if (!response.ok) {
-        console.log("error happened",data?.message||"Something went wrong");
+        toastCallBack(data?.message || "Something went wrong");
         throw new Error(data.message || "Something went wrong!");
+      } else {
+        toastCallBack("success");
       }
 
-      setIsLoading(false);
       return data;
     } catch (err: any) {
-      setIsLoading(false);
       setError(err.message || "Something went wrong!");
+
       throw err;
+    }finally{
+      setIsLoading(false);
     }
   };
 
@@ -46,7 +48,8 @@ const useHttp = () => {
     url: string,
     method: string = "POST",
     body: FormData | null = null,
-    headers: any = {},errorCallBack:(messsage:string)=>void=()=>{}
+    headers: any = {},
+    toastCallBack: (messsage: string) => void = () => {}
   ) => {
     setIsLoading(true);
     setError(null);
@@ -63,22 +66,22 @@ const useHttp = () => {
       });
 
       const data = await response.json();
-      console.log(data);
       if (!response.ok) {
-        console.log(data);
+      toastCallBack(data.message);
+
         throw new Error(data.message || "Something went wrong!");
+      }else{
+        toastCallBack("success");
       }
 
-      console.log(data);
 
-      setIsLoading(false);
       return data;
     } catch (err: any) {
-      setIsLoading(false);
-      console.log("useHttpError",err)
-      errorCallBack(err.message)
       setError(err.message || "Something went wrong!");
       throw err;
+    }finally{
+      setIsLoading(false);
+
     }
   };
   return {

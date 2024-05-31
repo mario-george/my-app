@@ -29,6 +29,7 @@ interface PlaceType {
   address: string;
   id: string;
   creator?:string
+  imageFileName:string
 }
 const Places = () => {
   const [places, setPlaces] = useState<Array<PlaceType> | undefined>();

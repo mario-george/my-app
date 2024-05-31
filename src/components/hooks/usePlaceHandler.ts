@@ -70,6 +70,8 @@ const dispatch=useDispatch()
     });
   };
   const handleDeletePlace = async () => {
+    
+    
     let respData = await sendRequest('places/'+placeID, "DELETE", null, {
       Authorization: "Bearer " + token,
     });

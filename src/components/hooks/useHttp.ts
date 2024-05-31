@@ -29,7 +29,7 @@ const useHttp = () => {
       const data = await response.json();
       console.log(data);
       if (!response.ok) {
-        console.log(data);
+        console.log("error happened",data?.message||"Something went wrong");
         throw new Error(data.message || "Something went wrong!");
       }
 
@@ -46,7 +46,7 @@ const useHttp = () => {
     url: string,
     method: string = "POST",
     body: FormData | null = null,
-    headers: any = {}
+    headers: any = {},errorCallBack:(messsage:string)=>void=()=>{}
   ) => {
     setIsLoading(true);
     setError(null);
@@ -75,6 +75,8 @@ const useHttp = () => {
       return data;
     } catch (err: any) {
       setIsLoading(false);
+      console.log("useHttpError",err)
+      errorCallBack(err.message)
       setError(err.message || "Something went wrong!");
       throw err;
     }

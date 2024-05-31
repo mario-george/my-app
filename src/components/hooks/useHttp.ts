@@ -31,7 +31,12 @@ const useHttp = () => {
         toastCallBack(data?.message || "Something went wrong");
         throw new Error(data.message || "Something went wrong!");
       } else {
-        toastCallBack("success");
+        if (data?.message == "place-edited") {
+          toastCallBack(data?.message,);
+        }else if(data?.message=="place-deleted"){
+          toastCallBack(data?.message);
+
+        }
       }
 
       return data;
@@ -39,7 +44,7 @@ const useHttp = () => {
       setError(err.message || "Something went wrong!");
 
       throw err;
-    }finally{
+    } finally {
       setIsLoading(false);
     }
   };
@@ -67,21 +72,21 @@ const useHttp = () => {
 
       const data = await response.json();
       if (!response.ok) {
-      toastCallBack(data.message);
+        toastCallBack(data.message);
 
         throw new Error(data.message || "Something went wrong!");
-      }else{
-        toastCallBack("success");
+      } else {
+        if (data?.message == "place-added") {
+          toastCallBack(data?.message);
+        }
       }
-
 
       return data;
     } catch (err: any) {
       setError(err.message || "Something went wrong!");
       throw err;
-    }finally{
+    } finally {
       setIsLoading(false);
-
     }
   };
   return {

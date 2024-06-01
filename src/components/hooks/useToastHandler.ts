@@ -1,4 +1,4 @@
-import { useToast } from "@chakra-ui/react";
+import { ToastPosition, useToast } from "@chakra-ui/react";
 
  const useToastHandler = () => {
 
@@ -28,7 +28,7 @@ import { useToast } from "@chakra-ui/react";
 
           });
         } else if (type == "custom-success" && message&&description) {
-            let position=message.includes('Edited') ?"bottom-center":"bottom-right"
+            let position:ToastPosition=message.includes('Edited') ?"bottom":"bottom-right"
             toast({
               title:message,
               description,

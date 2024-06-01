@@ -76,7 +76,7 @@ const useHttp = () => {
 
         throw new Error(data.message || "Something went wrong!");
       } else {
-        if (data?.message == "place-added") {
+        if (data?.message == "place-added"|| data?.message=="account-created") {
           toastCallBack(data?.message);
         }
       }

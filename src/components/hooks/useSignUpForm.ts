@@ -4,6 +4,7 @@ import useHttp from "./useHttp";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { login } from "@/components/GlobalRedux/userSlice";
+import useToastHandler from "./useToastHandler";
 interface Errors {
   name?: string;
   email?: string;
@@ -12,6 +13,7 @@ interface Errors {
 
 export default function useSignUpForm() {
   const { isLoading, error, sendRequestFormData } = useHttp();
+  const {toastCallBack} =useToastHandler()
   const dispatch = useDispatch();
   const router = useRouter();
   const [formState, setFormState] = useState({
@@ -72,17 +74,24 @@ export default function useSignUpForm() {
       formData.append("email", formState.email);
       formData.append("password", formState.password);
 
-
-
       // Send the FormData object in the body of the signup request
-      const data = await sendRequestFormData("users/signup", "POST", formData);
-      const { token, userId } = data;
-      console.log(data);
-      console.log(data);
-      console.log(data);
-      console.log(data);
-      dispatch(login({ token, userID: userId }));
-      router.push("/");
+      try {
+        const data = await sendRequestFormData(
+          "users/signup",
+          "POST",
+          formData,toastCallBack
+        );
+        const { token, userId } = data;
+
+        console.log("signup data", data);
+        dispatch(login({ token, userID: userId }));
+        router.push("/");
+      } catch (err: any) {
+        console.log("error happened in SIGNUP FORM: ", err);
+      } finally {
+        setErrors({});
+      }
+
       /* 
       
       localStorage.setItem("token", data.token);

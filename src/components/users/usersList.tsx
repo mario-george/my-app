@@ -10,10 +10,10 @@ interface User {
   places: Array<any>;
   name: string;
   image: string;
-  imageFileName:string
+  imageFileName: string;
 }
 export default function Users() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<null|User[]>(null);
 
   useEffect(() => {
     // Fetch data from external API
@@ -26,20 +26,21 @@ export default function Users() {
 
   return (
     <>
-      {users.length !== 0 ? (
+      {users?.length !== 0 ? (
         <div className=" w-full grid grid-cols-2 container mx-auto">
           {users?.map((u: User) => {
-            let imageURL
-            if(process.env.NEXT_PUBLIC_AWS_STORAGE === "true"){
-               imageURL =
-              process.env.NEXT_PUBLIC_DEV === "true"
-                ? `${process.env.NEXT_PUBLIC_URL_BACKEND}${u.image}`
-                : u.image;
-            }else{
-   imageURL = `${process.env.NEXT_PUBLIC_API_URL+"image/"}${u.imageFileName}`
-
+            let imageURL;
+            if (process.env.NEXT_PUBLIC_AWS_STORAGE === "true") {
+              imageURL =
+                process.env.NEXT_PUBLIC_DEV === "true"
+                  ? `${process.env.NEXT_PUBLIC_URL_BACKEND}${u.image}`
+                  : u.image;
+            } else {
+              imageURL = `${process.env.NEXT_PUBLIC_API_URL + "image/"}${
+                u.imageFileName
+              }`;
             }
-          
+
             console.log(process.env.NEXT_PUBLIC_DEV);
             console.log(imageURL);
             let descriptionInfo =
@@ -62,11 +63,17 @@ export default function Users() {
             );
           })}{" "}
         </div>
-      ) : (
-        <div className=" fixed inset-0 flex justify-center items-center">
-          <Spinner label="Loading..." color="success" size="lg" className="" />
-        </div>
-      )}
+      ) :users?.length==0 ?  (
+        <div className="fixed inset-0 flex justify-center items-center">
+        <p>No Users found</p>
+      </div>
+      ):
+    (
+      <div className=" fixed inset-0 flex justify-center items-center">
+      <Spinner label="Loading..." color="success" size="lg" className="" />
+    </div>
+    )
+      }
     </>
   );
 }

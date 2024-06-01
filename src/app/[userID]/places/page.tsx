@@ -18,22 +18,22 @@ interface RootState {
       token?: string | null;
       userID?: string | null;
       expirationDate?: Date | null;
-      render:boolean
+      render: boolean;
     };
     loggedIn?: boolean | null;
   };
 }
 interface PlaceType {
-  location:{
-    lat:number,
-    lng:number
-  }
+  location: {
+    lat: number;
+    lng: number;
+  };
   image: string;
   description: string;
   title: string;
   address: string;
   id: string;
-  imageFileName:string
+  imageFileName: string;
 }
 
 interface IUser {
@@ -45,7 +45,6 @@ const Place = (props: Props) => {
   const [places, setPlaces] = useState<Array<PlaceType> | undefined>();
   const [userData, setUserData] = useState<IUser | undefined>();
 
-  
   const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
   const GlobalStateUser = useSelector((state: RootState) => state.user.user);
 
@@ -85,15 +84,21 @@ const Place = (props: Props) => {
 
   return (
     <>
-    {
-places?.length!==0? <UserCardForUserPlaces user = {userData as IUser}/>:null
-
-    }
+      {<UserCardForUserPlaces user={userData as IUser} />}
+      
       {places == undefined
-        ?  content 
+        ? content
         : places?.map((p: PlaceType) => {
-            const { image, description, title, id, address ,location,imageFileName} = p;
-            let PlaceCardProps={
+            const {
+              image,
+              description,
+              title,
+              id,
+              address,
+              location,
+              imageFileName,
+            } = p;
+            let PlaceCardProps = {
               key: p.id,
               image: image,
               description: description,
@@ -102,13 +107,9 @@ places?.length!==0? <UserCardForUserPlaces user = {userData as IUser}/>:null
               id: id,
               isAuthorized: isAuthorized,
               location: location,
-              imageFileName
-            }
-            return (
-              <PlaceCard
-                {...PlaceCardProps}
-              />
-            );
+              imageFileName,
+            };
+            return <PlaceCard {...PlaceCardProps} />;
           })}
     </>
   );

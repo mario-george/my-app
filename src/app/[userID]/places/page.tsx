@@ -64,9 +64,16 @@ const Place = (props: Props) => {
         if (!resp.ok) {
           throw new Error("Something went wrong!");
         }
-
         setPlaces(respData.places);
         setUserData(respData.user);
+        if(respData?.places?.length==0){
+          setContent(
+            <div className=" flex my-6 justify-center items-center">
+              <p>No places found by this user</p>
+            </div>
+          );
+        return
+        }
       } catch (err) {
         setContent(
           <div className="fixed inset-0 flex justify-center items-center">
@@ -86,7 +93,7 @@ const Place = (props: Props) => {
     <>
       {<UserCardForUserPlaces user={userData as IUser} />}
       
-      {places == undefined
+      {places == undefined ||places?.length==0
         ? content
         : places?.map((p: PlaceType) => {
             const {

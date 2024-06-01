@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { Spinner } from "@nextui-org/react";
 
 import PlaceCard from "@/components/UI/PlaceCard";
+import UserCardForUserPlaces from "@/components/users/UserCardForUserPlaces";
 
 interface Props {
   params: {
@@ -34,8 +35,17 @@ interface PlaceType {
   id: string;
   imageFileName:string
 }
+
+interface IUser {
+  name: string;
+  email: string;
+  imageFileName: string;
+}
 const Place = (props: Props) => {
   const [places, setPlaces] = useState<Array<PlaceType> | undefined>();
+  const [userData, setUserData] = useState<IUser | undefined>();
+
+  
   const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
   const GlobalStateUser = useSelector((state: RootState) => state.user.user);
 
@@ -57,6 +67,7 @@ const Place = (props: Props) => {
         }
 
         setPlaces(respData.places);
+        setUserData(respData.user);
       } catch (err) {
         setContent(
           <div className="fixed inset-0 flex justify-center items-center">
@@ -74,6 +85,10 @@ const Place = (props: Props) => {
 
   return (
     <>
+    {
+places?.length!==0? <UserCardForUserPlaces user = {userData as IUser}/>:null
+
+    }
       {places == undefined
         ?  content 
         : places?.map((p: PlaceType) => {
